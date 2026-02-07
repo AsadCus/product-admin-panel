@@ -427,7 +427,7 @@ This project is open-source software licensed under the [MIT license](https://op
 
 ## 📞 Support
 
-For support, email support@example.com or open an issue in the GitHub repository.
+For support, please open an issue in the [GitHub repository](https://github.com/AsadCus/product-admin-panel/issues).
 
 ---
 
