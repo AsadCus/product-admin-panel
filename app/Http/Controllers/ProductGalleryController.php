@@ -22,7 +22,7 @@ class ProductGalleryController extends Controller
             ->orderBy('order')
             ->paginate(10);
 
-        return Inertia::render('ProductGalleries/Index', [
+        return Inertia::render('product-galleries/index', [
             'galleries' => $galleries,
         ]);
     }
@@ -36,7 +36,7 @@ class ProductGalleryController extends Controller
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        return Inertia::render('ProductGalleries/Create', [
+        return Inertia::render('product-galleries/create', [
             'products' => $products,
         ]);
     }
@@ -46,7 +46,19 @@ class ProductGalleryController extends Controller
      */
     public function store(StoreProductGalleryRequest $request): RedirectResponse
     {
-        ProductGallery::create($request->validated());
+        $validated = $request->validated();
+        
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('product-galleries', $filename, 'public');
+            $validated['file_path'] = $path;
+        }
+        
+        unset($validated['file']);
+        
+        ProductGallery::create($validated);
 
         return redirect()->route('product-galleries.index')
             ->with('success', 'Galeri produk berhasil ditambahkan.');
@@ -59,7 +71,7 @@ class ProductGalleryController extends Controller
     {
         $productGallery->load('product');
 
-        return Inertia::render('ProductGalleries/Show', [
+        return Inertia::render('product-galleries/show', [
             'gallery' => $productGallery,
         ]);
     }
@@ -73,7 +85,7 @@ class ProductGalleryController extends Controller
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        return Inertia::render('ProductGalleries/Edit', [
+        return Inertia::render('product-galleries/edit', [
             'gallery' => $productGallery,
             'products' => $products,
         ]);
@@ -84,7 +96,24 @@ class ProductGalleryController extends Controller
      */
     public function update(UpdateProductGalleryRequest $request, ProductGallery $productGallery): RedirectResponse
     {
-        $productGallery->update($request->validated());
+        $validated = $request->validated();
+        
+        // Handle file upload if new file is provided
+        if ($request->hasFile('file')) {
+            // Delete old file if exists
+            if ($productGallery->file_path && \Storage::disk('public')->exists($productGallery->file_path)) {
+                \Storage::disk('public')->delete($productGallery->file_path);
+            }
+            
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('product-galleries', $filename, 'public');
+            $validated['file_path'] = $path;
+        }
+        
+        unset($validated['file']);
+        
+        $productGallery->update($validated);
 
         return redirect()->route('product-galleries.index')
             ->with('success', 'Galeri produk berhasil diperbarui.');
@@ -95,6 +124,11 @@ class ProductGalleryController extends Controller
      */
     public function destroy(ProductGallery $productGallery): RedirectResponse
     {
+        // Delete file if exists
+        if ($productGallery->file_path && \Storage::disk('public')->exists($productGallery->file_path)) {
+            \Storage::disk('public')->delete($productGallery->file_path);
+        }
+        
         $productGallery->delete();
 
         return redirect()->route('product-galleries.index')

@@ -21,7 +21,7 @@ class SupplierController extends Controller
             ->latest()
             ->paginate(10);
 
-        return Inertia::render('Suppliers/Index', [
+        return Inertia::render('suppliers/index', [
             'suppliers' => $suppliers,
         ]);
     }
@@ -31,7 +31,7 @@ class SupplierController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Suppliers/Create');
+        return Inertia::render('suppliers/create');
     }
 
     /**
@@ -52,7 +52,7 @@ class SupplierController extends Controller
     {
         $supplier->load('products');
 
-        return Inertia::render('Suppliers/Show', [
+        return Inertia::render('suppliers/show', [
             'supplier' => $supplier,
         ]);
     }
@@ -62,7 +62,7 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier): Response
     {
-        return Inertia::render('Suppliers/Edit', [
+        return Inertia::render('suppliers/edit', [
             'supplier' => $supplier,
         ]);
     }

@@ -22,7 +22,7 @@ class ProductController extends Controller
             ->latest()
             ->paginate(10);
 
-        return Inertia::render('Products/Index', [
+        return Inertia::render('products/index', [
             'products' => $products,
         ]);
     }
@@ -36,7 +36,7 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        return Inertia::render('Products/Create', [
+        return Inertia::render('products/create', [
             'suppliers' => $suppliers,
         ]);
     }
@@ -59,7 +59,7 @@ class ProductController extends Controller
     {
         $product->load(['supplier', 'galleries']);
 
-        return Inertia::render('Products/Show', [
+        return Inertia::render('products/show', [
             'product' => $product,
         ]);
     }
@@ -73,7 +73,7 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get(['id', 'name']);
 
-        return Inertia::render('Products/Edit', [
+        return Inertia::render('products/edit', [
             'product' => $product,
             'suppliers' => $suppliers,
         ]);

@@ -23,7 +23,7 @@ class StoreProductGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file_path' => ['required', 'string', 'max:255'],
+            'file' => ['required', 'file', 'image', 'max:2048'], // max 2MB
             'product_id' => ['required', 'exists:products,id'],
             'order' => ['nullable', 'integer', 'min:0'],
         ];
@@ -37,7 +37,10 @@ class StoreProductGalleryRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'file_path.required' => 'File path wajib diisi.',
+            'file.required' => 'File gambar wajib diupload.',
+            'file.file' => 'File harus berupa file yang valid.',
+            'file.image' => 'File harus berupa gambar (jpg, jpeg, png, gif, svg).',
+            'file.max' => 'Ukuran file maksimal 2MB.',
             'product_id.required' => 'Produk wajib dipilih.',
             'product_id.exists' => 'Produk tidak ditemukan.',
             'order.integer' => 'Order harus berupa angka.',

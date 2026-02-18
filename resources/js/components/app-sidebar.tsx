@@ -1,6 +1,13 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
-import { NavFooter } from '@/components/nav-footer';
+import {
+    LayoutGrid,
+    Package,
+    Truck,
+    Image,
+    Plus,
+    List,
+    FolderTree,
+} from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -11,39 +18,102 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import products from '@/routes/products';
+import productCategories from '@/routes/product-categories';
+import suppliers from '@/routes/suppliers';
+import productGalleries from '@/routes/product-galleries';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+import { useTranslation } from '@/translations';
 
 export function AppSidebar() {
+    const { t } = useTranslation();
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: t('nav.dashboard'),
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        {
+            title: t('nav.suppliers'),
+            icon: Truck,
+            items: [
+                {
+                    title: `${t('nav.all')} ${t('nav.suppliers')}`,
+                    href: suppliers.index(),
+                    icon: List,
+                },
+                {
+                    title: `${t('nav.add')} ${t('nav.suppliers')}`,
+                    href: suppliers.create(),
+                    icon: Plus,
+                },
+            ],
+        },
+        {
+            title: t('nav.categories'),
+            icon: FolderTree,
+            items: [
+                {
+                    title: `${t('nav.all')} ${t('nav.categories')}`,
+                    href: productCategories.index(),
+                    icon: List,
+                },
+                {
+                    title: `${t('nav.add')} ${t('nav.categories')}`,
+                    href: productCategories.create(),
+                    icon: Plus,
+                },
+            ],
+        },
+        {
+            title: t('nav.products'),
+            icon: Package,
+            items: [
+                {
+                    title: `${t('nav.all')} ${t('nav.products')}`,
+                    href: products.index(),
+                    icon: List,
+                },
+                {
+                    title: `${t('nav.add')} ${t('nav.products')}`,
+                    href: products.create(),
+                    icon: Plus,
+                },
+            ],
+        },
+        {
+            title: t('nav.galleries'),
+            icon: Image,
+            items: [
+                {
+                    title: `${t('nav.all')} ${t('nav.galleries')}`,
+                    href: productGalleries.index(),
+                    icon: List,
+                },
+                {
+                    title: `${t('nav.add')} ${t('nav.galleries')}`,
+                    href: productGalleries.create(),
+                    icon: Plus,
+                },
+            ],
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+            <SidebarHeader className="border-b border-sidebar-border">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="hover:bg-sidebar-accent/50"
+                        >
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
@@ -52,12 +122,11 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
+            <SidebarContent className="gap-0">
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+            <SidebarFooter className="border-t border-sidebar-border">
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
