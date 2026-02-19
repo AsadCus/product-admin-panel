@@ -14,16 +14,21 @@ class PublicProductController extends Controller
         $query = Product::with(['supplier', 'category', 'galleries']);
 
         // Filter by supplier
-        if ($request->has('supplier')) {
-            $query->where('supplier_id', $request->supplier);
+        if ($request->has('supplier_id') && $request->supplier_id) {
+            $query->where('supplier_id', $request->supplier_id);
         }
 
         // Filter by category
-        if ($request->has('category')) {
-            $query->where('category_id', $request->category);
+        if ($request->has('category_id') && $request->category_id) {
+            $query->where('category_id', $request->category_id);
         }
 
-        $products = $query->get();
+        // Search by product name
+        if ($request->has('search') && $request->search) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $products = $query->latest()->get();
 
         return ProductResource::collection($products);
     }

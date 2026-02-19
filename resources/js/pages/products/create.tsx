@@ -1,9 +1,9 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import BackButton from '@/components/back-button';
 import {
     Card,
     CardContent,
@@ -57,11 +57,7 @@ export default function ProductCreate({ suppliers }: Props) {
 
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="icon" asChild>
-                        <Link href="/products">
-                            <ArrowLeft className="h-4 w-4" />
-                        </Link>
-                    </Button>
+                    <BackButton />
                     <Heading
                         title={t('products.create')}
                         description={t('products.create_desc')}

@@ -25,7 +25,20 @@ class StoreProductGalleryRequest extends FormRequest
         return [
             'file' => ['required', 'file', 'image', 'max:2048'], // max 2MB
             'product_id' => ['required', 'exists:products,id'],
-            'order' => ['nullable', 'integer', 'min:0'],
+            'order' => [
+                'required',
+                'integer',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $exists = \App\Models\ProductGallery::where('product_id', $this->product_id)
+                        ->where('order', $value)
+                        ->exists();
+                    
+                    if ($exists) {
+                        $fail('Order ' . $value . ' sudah digunakan untuk produk ini. Silakan pilih order yang berbeda.');
+                    }
+                },
+            ],
         ];
     }
 
@@ -43,8 +56,9 @@ class StoreProductGalleryRequest extends FormRequest
             'file.max' => 'Ukuran file maksimal 2MB.',
             'product_id.required' => 'Produk wajib dipilih.',
             'product_id.exists' => 'Produk tidak ditemukan.',
+            'order.required' => 'Order wajib diisi.',
             'order.integer' => 'Order harus berupa angka.',
-            'order.min' => 'Order minimal 0.',
+            'order.min' => 'Order minimal 1.',
         ];
     }
 }

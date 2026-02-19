@@ -18,12 +18,12 @@ class ProductGalleryController extends Controller
     public function index(): Response
     {
         $galleries = ProductGallery::query()
-            ->with('product')
+            ->with(['product.supplier', 'product.category'])
             ->orderBy('order')
-            ->paginate(10);
+            ->get();
 
         return Inertia::render('product-galleries/index', [
-            'galleries' => $galleries,
+            'galleries' => ['data' => $galleries],
         ]);
     }
 
@@ -51,8 +51,9 @@ class ProductGalleryController extends Controller
         // Handle file upload
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('product-galleries', $filename, 'public');
+            // $filename = time() . '_' . $file->getClientOriginalName();
+            // $path = $file->store('product-galleries', $filename, 'public');
+            $path = $file->store('product-galleries', 'public');
             $validated['file_path'] = $path;
         }
         
@@ -106,8 +107,10 @@ class ProductGalleryController extends Controller
             }
             
             $file = $request->file('file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('product-galleries', $filename, 'public');
+            // $filename = time() . '_' . $file->getClientOriginalName();
+            // $path = $file->store('product-galleries', $filename, 'public');
+            $path = $file->store('product-galleries', 'public');
+
             $validated['file_path'] = $path;
         }
         

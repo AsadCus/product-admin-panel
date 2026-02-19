@@ -7,6 +7,7 @@ import {
     Plus,
     List,
     FolderTree,
+    Megaphone,
 } from 'lucide-react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -98,6 +99,22 @@ export function AppSidebar() {
                 {
                     title: `${t('nav.add')} ${t('nav.galleries')}`,
                     href: productGalleries.create(),
+                    icon: Plus,
+                },
+            ],
+        },
+        {
+            title: t('nav.banners'),
+            icon: Megaphone,
+            items: [
+                {
+                    title: `${t('nav.all')} ${t('nav.banners')}`,
+                    href: '/banners',
+                    icon: List,
+                },
+                {
+                    title: `${t('nav.add')} ${t('nav.banners')}`,
+                    href: '/banners/create',
                     icon: Plus,
                 },
             ],

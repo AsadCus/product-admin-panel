@@ -6,6 +6,7 @@ export const en = {
     'nav.categories': 'Categories',
     'nav.products': 'Products',
     'nav.galleries': 'Product Galleries',
+    'nav.banners': 'Banners',
     'nav.all': 'All',
     'nav.add': 'Add',
 
@@ -60,6 +61,7 @@ export const en = {
     'common.metadata': 'Metadata',
     'common.created_at': 'Created At',
     'common.updated_at': 'Updated At',
+    'common.confirm_delete': 'Are you sure you want to delete this item?',
 
     // Products
     'products.title': 'Products',
@@ -82,12 +84,16 @@ export const en = {
     'products.creating': 'Creating...',
     'products.updating': 'Updating...',
     'products.delete_confirm': 'Are you sure you want to delete this product? This action cannot be undone.',
+    'products.delete_warning': 'This action cannot be undone. This will permanently delete the product.',
+    'products.deleted_success': 'Product deleted successfully',
+    'products.deleted_error': 'Failed to delete product',
     'products.no_products': 'No products found',
     'products.details': 'Product details',
     'products.information': 'Product Information',
     'products.basic_details': 'Basic details about this product',
     'products.images_associated': 'Images associated with this product',
     'products.no_galleries_yet': 'No galleries yet',
+    'products.search_placeholder': 'Search products...',
 
     // Suppliers
     'suppliers.title': 'Suppliers',
@@ -108,6 +114,9 @@ export const en = {
     'suppliers.creating': 'Creating...',
     'suppliers.updating': 'Updating...',
     'suppliers.delete_confirm': 'Are you sure you want to delete this supplier? This action cannot be undone.',
+    'suppliers.delete_warning': 'This action cannot be undone. This will permanently delete the supplier.',
+    'suppliers.deleted_success': 'Supplier deleted successfully',
+    'suppliers.deleted_error': 'Failed to delete supplier',
     'suppliers.no_suppliers': 'No suppliers found',
     'suppliers.details': 'Supplier details',
     'suppliers.information': 'Supplier Information',
@@ -116,6 +125,7 @@ export const en = {
     'suppliers.products_from': 'Products from this supplier',
     'suppliers.no_products_yet': 'No products yet',
     'suppliers.view_supplier': 'View supplier',
+    'suppliers.search_placeholder': 'Search suppliers...',
 
     // Categories
     'categories.title': 'Product Categories',
@@ -136,6 +146,9 @@ export const en = {
     'categories.creating': 'Creating...',
     'categories.updating': 'Updating...',
     'categories.delete_confirm': 'Are you sure you want to delete this category? This action cannot be undone.',
+    'categories.delete_warning': 'This action cannot be undone. This will permanently delete the category.',
+    'categories.deleted_success': 'Category deleted successfully',
+    'categories.deleted_error': 'Failed to delete category',
     'categories.no_categories': 'No categories found',
     'categories.details': 'Category details',
     'categories.information': 'Category Information',
@@ -144,6 +157,7 @@ export const en = {
     'categories.products_in_category': 'Products in this Category',
     'categories.products_list': 'List of products under this category',
     'categories.no_products_yet': 'No products in this category yet',
+    'categories.search_placeholder': 'Search categories...',
 
     // Galleries
     'galleries.title': 'Product Galleries',
@@ -165,6 +179,9 @@ export const en = {
     'galleries.creating': 'Creating...',
     'galleries.updating': 'Updating...',
     'galleries.delete_confirm': 'Are you sure you want to delete this gallery? This action cannot be undone.',
+    'galleries.delete_warning': 'This action cannot be undone. This will permanently delete the gallery image.',
+    'galleries.deleted_success': 'Gallery deleted successfully',
+    'galleries.deleted_error': 'Failed to delete gallery',
     'galleries.no_galleries': 'No galleries found',
     'galleries.image_file': 'Image File',
     'galleries.image_preview': 'Image Preview',
@@ -177,6 +194,31 @@ export const en = {
     'galleries.gallery_info': 'Product gallery information',
     'galleries.display_order': 'Display Order',
     'galleries.view_product': 'View product',
+    'galleries.search_placeholder': 'Search galleries...',
+    'galleries.image': 'Image',
+
+    // Banners
+    'banners.title': 'Banners',
+    'banners.manage': 'Manage promotional banners - drag to reorder within supplier',
+    'banners.all': 'All Banners',
+    'banners.add': 'Add Banner',
+    'banners.no_banners': 'No banners found. Create one to get started.',
+    'banners.count': 'banner',
+    'banners.drag_to_reorder': 'Drag banners to reorder within this supplier',
+    'banners.active': 'Active',
+    'banners.inactive': 'Inactive',
+    'banners.no_description': 'No description',
+    'banners.view': 'View',
+    'banners.edit': 'Edit',
+    'banners.delete': 'Delete',
+    'banners.delete_title': 'Delete Banner?',
+    'banners.delete_description': 'Are you sure you want to delete banner "{title}"? This action cannot be undone.',
+    'banners.delete_cancel': 'Cancel',
+    'banners.delete_confirm': 'Delete',
+    'banners.order_updated': 'Banner order updated successfully',
+    'banners.order_failed': 'Failed to update banner order',
+    'banners.deleted_success': 'Banner deleted successfully',
+    'banners.deleted_failed': 'Failed to delete banner',
 
     // Form
     'form.select_supplier': 'Select a supplier',
@@ -188,6 +230,10 @@ export const en = {
     'dialog.delete_title': 'Delete',
     'dialog.cancel': 'Cancel',
     'dialog.delete': 'Delete',
+
+    // Bulk Actions
+    'common.delete_selected': 'Delete Selected',
+    'common.add_selected': 'Add Selected',
 };
 
 export type TranslationKey = keyof typeof en;

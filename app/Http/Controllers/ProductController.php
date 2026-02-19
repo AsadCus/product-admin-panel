@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
@@ -60,7 +61,26 @@ class ProductController extends Controller
         $product->load(['supplier', 'galleries']);
 
         return Inertia::render('products/show', [
-            'product' => $product,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'supplier' => [
+                    'id' => $product->supplier->id,
+                    'name' => $product->supplier->name,
+                    'desc' => $product->supplier->desc,
+                ],
+                'galleries' => $product->galleries->map(function ($gallery) {
+                    return [
+                        'id' => $gallery->id,
+                        'file_path' => $gallery->file_path,
+                        'file_url' => $gallery->file_path ? asset('storage/' . $gallery->file_path) : null,
+                        'order' => $gallery->order,
+                    ];
+                }),
+                'created_at' => $product->created_at->toISOString(),
+                'updated_at' => $product->updated_at->toISOString(),
+            ],
         ]);
     }
 
@@ -99,5 +119,24 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')
             ->with('success', 'Produk berhasil dihapus.');
+    }
+
+    /**
+     * Reorder product galleries.
+     */
+    public function reorderGalleries(Product $product): RedirectResponse
+    {
+        $galleries = request()->validate([
+            'galleries' => 'required|array',
+            'galleries.*.id' => 'required|exists:product_galleries,id',
+            'galleries.*.order' => 'required|integer|min:1',
+        ])['galleries'];
+
+        foreach ($galleries as $gallery) {
+            \App\Models\ProductGallery::where('id', $gallery['id'])
+                ->update(['order' => $gallery['order']]);
+        }
+
+        return back();
     }
 }

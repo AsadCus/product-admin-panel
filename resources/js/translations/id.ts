@@ -6,6 +6,7 @@ export const id = {
     'nav.categories': 'Kategori',
     'nav.products': 'Produk',
     'nav.galleries': 'Galeri Produk',
+    'nav.banners': 'Banner',
     'nav.all': 'Semua',
     'nav.add': 'Tambah',
 
@@ -60,6 +61,7 @@ export const id = {
     'common.metadata': 'Metadata',
     'common.created_at': 'Dibuat Pada',
     'common.updated_at': 'Diperbarui Pada',
+    'common.confirm_delete': 'Apakah Anda yakin ingin menghapus item ini?',
 
     // Products
     'products.title': 'Produk',
@@ -82,12 +84,16 @@ export const id = {
     'products.creating': 'Membuat...',
     'products.updating': 'Memperbarui...',
     'products.delete_confirm': 'Apakah Anda yakin ingin menghapus produk ini? Tindakan ini tidak dapat dibatalkan.',
+    'products.delete_warning': 'Tindakan ini tidak dapat dibatalkan. Ini akan menghapus produk secara permanen.',
+    'products.deleted_success': 'Produk berhasil dihapus',
+    'products.deleted_error': 'Gagal menghapus produk',
     'products.no_products': 'Tidak ada produk',
     'products.details': 'Detail produk',
     'products.information': 'Informasi Produk',
     'products.basic_details': 'Detail dasar tentang produk ini',
     'products.images_associated': 'Gambar yang terkait dengan produk ini',
     'products.no_galleries_yet': 'Belum ada galeri',
+    'products.search_placeholder': 'Cari produk...',
 
     // Suppliers
     'suppliers.title': 'Pemasok',
@@ -108,6 +114,9 @@ export const id = {
     'suppliers.creating': 'Membuat...',
     'suppliers.updating': 'Memperbarui...',
     'suppliers.delete_confirm': 'Apakah Anda yakin ingin menghapus pemasok ini? Tindakan ini tidak dapat dibatalkan.',
+    'suppliers.delete_warning': 'Tindakan ini tidak dapat dibatalkan. Ini akan menghapus pemasok secara permanen.',
+    'suppliers.deleted_success': 'Pemasok berhasil dihapus',
+    'suppliers.deleted_error': 'Gagal menghapus pemasok',
     'suppliers.no_suppliers': 'Tidak ada pemasok',
     'suppliers.details': 'Detail pemasok',
     'suppliers.information': 'Informasi Pemasok',
@@ -116,6 +125,7 @@ export const id = {
     'suppliers.products_from': 'Produk dari pemasok ini',
     'suppliers.no_products_yet': 'Belum ada produk',
     'suppliers.view_supplier': 'Lihat pemasok',
+    'suppliers.search_placeholder': 'Cari pemasok...',
 
     // Categories
     'categories.title': 'Kategori Produk',
@@ -136,6 +146,9 @@ export const id = {
     'categories.creating': 'Membuat...',
     'categories.updating': 'Memperbarui...',
     'categories.delete_confirm': 'Apakah Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.',
+    'categories.delete_warning': 'Tindakan ini tidak dapat dibatalkan. Ini akan menghapus kategori secara permanen.',
+    'categories.deleted_success': 'Kategori berhasil dihapus',
+    'categories.deleted_error': 'Gagal menghapus kategori',
     'categories.no_categories': 'Tidak ada kategori',
     'categories.details': 'Detail kategori',
     'categories.information': 'Informasi Kategori',
@@ -144,6 +157,7 @@ export const id = {
     'categories.products_in_category': 'Produk dalam Kategori Ini',
     'categories.products_list': 'Daftar produk dalam kategori ini',
     'categories.no_products_yet': 'Belum ada produk dalam kategori ini',
+    'categories.search_placeholder': 'Cari kategori...',
 
     // Galleries
     'galleries.title': 'Galeri Produk',
@@ -165,6 +179,9 @@ export const id = {
     'galleries.creating': 'Membuat...',
     'galleries.updating': 'Memperbarui...',
     'galleries.delete_confirm': 'Apakah Anda yakin ingin menghapus galeri ini? Tindakan ini tidak dapat dibatalkan.',
+    'galleries.delete_warning': 'Tindakan ini tidak dapat dibatalkan. Ini akan menghapus gambar galeri secara permanen.',
+    'galleries.deleted_success': 'Galeri berhasil dihapus',
+    'galleries.deleted_error': 'Gagal menghapus galeri',
     'galleries.no_galleries': 'Tidak ada galeri',
     'galleries.image_file': 'File Gambar',
     'galleries.image_preview': 'Preview Gambar',
@@ -177,6 +194,31 @@ export const id = {
     'galleries.gallery_info': 'Informasi galeri produk',
     'galleries.display_order': 'Urutan Tampilan',
     'galleries.view_product': 'Lihat produk',
+    'galleries.search_placeholder': 'Cari galeri...',
+    'galleries.image': 'Gambar',
+
+    // Banners
+    'banners.title': 'Banner',
+    'banners.manage': 'Kelola banner promosi - drag untuk mengubah urutan dalam supplier',
+    'banners.all': 'Semua Banner',
+    'banners.add': 'Tambah Banner',
+    'banners.no_banners': 'Tidak ada banner. Buat satu untuk memulai.',
+    'banners.count': 'banner',
+    'banners.drag_to_reorder': 'Drag banner untuk mengubah urutan dalam supplier ini',
+    'banners.active': 'Aktif',
+    'banners.inactive': 'Tidak Aktif',
+    'banners.no_description': 'Tidak ada deskripsi',
+    'banners.view': 'Lihat',
+    'banners.edit': 'Edit',
+    'banners.delete': 'Hapus',
+    'banners.delete_title': 'Hapus Banner?',
+    'banners.delete_description': 'Apakah Anda yakin ingin menghapus banner "{title}"? Tindakan ini tidak dapat dibatalkan.',
+    'banners.delete_cancel': 'Batal',
+    'banners.delete_confirm': 'Hapus',
+    'banners.order_updated': 'Urutan banner berhasil diperbarui',
+    'banners.order_failed': 'Gagal memperbarui urutan banner',
+    'banners.deleted_success': 'Banner berhasil dihapus',
+    'banners.deleted_failed': 'Gagal menghapus banner',
 
     // Form
     'form.select_supplier': 'Pilih pemasok',
@@ -188,4 +230,8 @@ export const id = {
     'dialog.delete_title': 'Hapus',
     'dialog.cancel': 'Batal',
     'dialog.delete': 'Hapus',
+
+    // Bulk Actions
+    'common.delete_selected': 'Hapus Terpilih',
+    'common.add_selected': 'Tambah Terpilih',
 };

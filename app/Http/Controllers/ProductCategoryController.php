@@ -16,6 +16,7 @@ class ProductCategoryController extends Controller
         $categories = ProductCategory::query()
             ->with('supplier')
             ->withCount('products')
+            ->orderBy('order')
             ->latest()
             ->get();
 
@@ -45,6 +46,10 @@ class ProductCategoryController extends Controller
             'supplier_id.required' => 'Supplier wajib dipilih.',
             'supplier_id.exists' => 'Supplier tidak valid.',
         ]);
+
+        // Set order to be the last
+        $maxOrder = ProductCategory::max('order') ?? 0;
+        $validated['order'] = $maxOrder + 1;
 
         ProductCategory::create($validated);
 

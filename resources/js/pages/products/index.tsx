@@ -1,17 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus, Pencil, Trash2, Eye } from 'lucide-react';
-import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
 import {
     Card,
     CardContent,
@@ -19,58 +10,20 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
 import type { BreadcrumbItem } from '@/types';
 import { useTranslation } from '@/translations';
-
-interface Supplier {
-    id: number;
-    name: string;
-}
-
-interface Product {
-    id: number;
-    name: string;
-    description: string | null;
-    supplier: Supplier;
-    galleries_count?: number;
-    created_at: string;
-}
-
-interface PaginationLink {
-    url: string | null;
-    label: string;
-    active: boolean;
-}
+import { DataTable } from '@/components/ui/data-table';
+import { useProductColumns, type Product } from './columns';
 
 interface Props {
     products: {
         data: Product[];
-        links: PaginationLink[];
-        current_page: number;
-        last_page: number;
     };
 }
 
 export default function ProductsIndex({ products }: Props) {
     const { t } = useTranslation();
-    const [deleteId, setDeleteId] = useState<number | null>(null);
-
-    const handleDelete = () => {
-        if (deleteId) {
-            router.delete(`/products/${deleteId}`, {
-                onSuccess: () => setDeleteId(null),
-            });
-        }
-    };
+    const columns = useProductColumns();
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -79,17 +32,36 @@ export default function ProductsIndex({ products }: Props) {
         },
     ];
 
+    const handleBulkDelete = (selectedProducts: Product[]) => {
+        if (confirm(`${t('common.confirm_delete')} ${selectedProducts.length} ${t('products.title').toLowerCase()}?`)) {
+            const ids = selectedProducts.map(product => product.id);
+            // You can implement bulk delete API call here
+            router.post('/products/bulk-delete', { ids }, {
+                onSuccess: () => {
+                    // Refresh the page or update the data
+                    router.reload();
+                }
+            });
+        }
+    };
+
+    const handleBulkAdd = (selectedProducts: Product[]) => {
+        // Example: Add to favorites, categories, etc.
+        console.log('Bulk add:', selectedProducts);
+        // You can implement bulk add functionality here
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('products.title')} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <div className="flex items-center justify-between">
+            <div className="flex h-full flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <Heading
                         title={t('products.title')}
                         description={t('products.manage')}
                     />
-                    <Button asChild>
+                    <Button asChild className="w-full sm:w-auto">
                         <Link href="/products/create">
                             <Plus className="mr-2 h-4 w-4" />
                             {t('products.add')}
@@ -105,128 +77,19 @@ export default function ProductsIndex({ products }: Props) {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="overflow-x-auto">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>{t('common.name')}</TableHead>
-                                        <TableHead>{t('common.description')}</TableHead>
-                                        <TableHead>{t('products.supplier')}</TableHead>
-                                        <TableHead>{t('products.galleries')}</TableHead>
-                                        <TableHead className="text-right">
-                                            {t('common.actions')}
-                                        </TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {products.data.length === 0 ? (
-                                        <TableRow>
-                                            <TableCell
-                                                colSpan={5}
-                                                className="text-center text-muted-foreground"
-                                            >
-                                                {t('products.no_products')}
-                                            </TableCell>
-                                        </TableRow>
-                                    ) : (
-                                        products.data.map((product) => (
-                                            <TableRow key={product.id}>
-                                                <TableCell className="font-medium">
-                                                    {product.name}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {product.description ? (
-                                                        <span className="line-clamp-2">
-                                                            {product.description}
-                                                        </span>
-                                                    ) : (
-                                                        <span className="text-muted-foreground">
-                                                            -
-                                                        </span>
-                                                    )}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge variant="secondary">
-                                                        {product.supplier.name}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge variant="outline">
-                                                        {product.galleries_count || 0}{' '}
-                                                        {t('products.images')}
-                                                    </Badge>
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <div className="flex justify-end gap-2">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            asChild
-                                                        >
-                                                            <Link
-                                                                href={`/products/${product.id}`}
-                                                            >
-                                                                <Eye className="h-4 w-4" />
-                                                            </Link>
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            asChild
-                                                        >
-                                                            <Link
-                                                                href={`/products/${product.id}/edit`}
-                                                            >
-                                                                <Pencil className="h-4 w-4" />
-                                                            </Link>
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            onClick={() =>
-                                                                setDeleteId(
-                                                                    product.id,
-                                                                )
-                                                            }
-                                                        >
-                                                            <Trash2 className="h-4 w-4 text-destructive" />
-                                                        </Button>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
+                        <DataTable
+                            columns={columns}
+                            data={products.data}
+                            searchKey="name"
+                            searchPlaceholder={t('products.search_placeholder')}
+                            onBulkDelete={handleBulkDelete}
+                            onBulkAdd={handleBulkAdd}
+                            bulkDeleteLabel={t('common.delete_selected')}
+                            bulkAddLabel={t('common.add_selected')}
+                        />
                     </CardContent>
                 </Card>
             </div>
-
-            <Dialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>{t('dialog.delete_title')} {t('products.title')}</DialogTitle>
-                        <DialogDescription>
-                            {t('products.delete_confirm')}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setDeleteId(null)}
-                        >
-                            {t('dialog.cancel')}
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleDelete}
-                        >
-                            {t('dialog.delete')}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
         </AppLayout>
     );
 }

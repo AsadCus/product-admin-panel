@@ -1,9 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Pencil } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import BackButton from '@/components/back-button';
 import {
     Card,
     CardContent,
@@ -49,20 +50,16 @@ export default function ProductCategoryShow({ category }: Props) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={category.name} />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" asChild>
-                            <Link href="/product-categories">
-                                <ArrowLeft className="h-4 w-4" />
-                            </Link>
-                        </Button>
+            <div className="flex h-full flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-4 min-w-0">
+                        <BackButton />
                         <Heading
                             title={category.name}
                             description={t('categories.details')}
                         />
                     </div>
-                    <Button asChild>
+                    <Button asChild className="w-full sm:w-auto shrink-0">
                         <Link href={`/product-categories/${category.id}/edit`}>
                             <Pencil className="mr-2 h-4 w-4" />
                             {t('categories.edit')}

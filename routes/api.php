@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductGalleryController;
 use App\Http\Controllers\Api\PublicProductController;
@@ -13,6 +14,8 @@ Route::get('products/{product}', [PublicProductController::class, 'show'])->name
 // Protected API - auth required
 Route::middleware('auth:sanctum')->prefix('api')->name('api.')->group(function () {
     Route::apiResource('suppliers', SupplierController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::post('categories/reorder', [CategoryController::class, 'reorder'])->name('categories.reorder');
     Route::apiResource('products', ProductController::class);
     Route::apiResource('product-galleries', ProductGalleryController::class);
 });
