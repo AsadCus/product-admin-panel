@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { Pencil, Package } from 'lucide-react';
+import { Pencil, Package, Plus } from 'lucide-react';
 import BackButton from '@/components/back-button';
 import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
@@ -57,20 +57,28 @@ export default function SupplierShow({ supplier }: Props) {
                         />
                     </div>
                     <Button asChild className="w-full sm:w-auto shrink-0">
-                        <Link href={`/suppliers/${supplier.id}/edit`}>
-                            <Pencil className="mr-2 h-4 w-4" />
-                            {t('suppliers.edit')}
+                        <Link href="/suppliers/create">
+                            <Plus className="mr-2 h-4 w-4" />
+                            {t('suppliers.add')}
                         </Link>
                     </Button>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
                     <Card>
-                        <CardHeader>
-                            <CardTitle>{t('suppliers.information')}</CardTitle>
-                            <CardDescription>
-                                {t('suppliers.basic_details')}
-                            </CardDescription>
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <div>
+                                <CardTitle>{t('suppliers.information')}</CardTitle>
+                                <CardDescription>
+                                    {t('suppliers.basic_details')}
+                                </CardDescription>
+                            </div>
+                            <Button asChild size="sm" className="bg-black !text-white hover:bg-black/90">
+                                <Link href={`/suppliers/${supplier.id}/edit`}>
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    {t('suppliers.edit')}
+                                </Link>
+                            </Button>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div>
@@ -136,18 +144,18 @@ export default function SupplierShow({ supplier }: Props) {
                                     </Button>
                                 </div>
                             ) : (
-                                <div className="space-y-2 overflow-x-auto">
+                                <div className="space-y-2">
                                     {supplier.products.map((product) => (
                                         <div
                                             key={product.id}
-                                            className="flex items-center justify-between rounded-lg border p-3 min-w-max"
+                                            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 rounded-lg border p-3"
                                         >
-                                            <div>
-                                                <p className="font-medium">
+                                            <div className="min-w-0 flex-1">
+                                                <p className="font-medium truncate">
                                                     {product.name}
                                                 </p>
                                                 {product.description && (
-                                                    <p className="text-sm text-muted-foreground line-clamp-1">
+                                                    <p className="text-sm text-muted-foreground line-clamp-2">
                                                         {product.description}
                                                     </p>
                                                 )}
@@ -156,6 +164,7 @@ export default function SupplierShow({ supplier }: Props) {
                                                 variant="ghost"
                                                 size="sm"
                                                 asChild
+                                                className="w-full sm:w-auto shrink-0"
                                             >
                                                 <Link
                                                     href={`/products/${product.id}`}

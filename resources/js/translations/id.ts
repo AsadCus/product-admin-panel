@@ -219,6 +219,12 @@ export const id = {
     'banners.order_failed': 'Gagal memperbarui urutan banner',
     'banners.deleted_success': 'Banner berhasil dihapus',
     'banners.deleted_failed': 'Gagal menghapus banner',
+    'banners.details': 'Detail banner',
+    'banners.image': 'Gambar Banner',
+    'banners.information': 'Informasi',
+    'banners.title_label': 'Judul',
+    'banners.status': 'Status',
+    'banners.order_label': 'Urutan',
 
     // Form
     'form.select_supplier': 'Pilih pemasok',

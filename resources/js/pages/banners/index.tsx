@@ -56,51 +56,53 @@ function SortableBannerItem({ banner, onDelete, onImageClick, t }: SortableBanne
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="group relative flex items-center gap-4 rounded-lg border bg-card p-4 hover:bg-accent/50">
-            <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
-                <GripVertical className="h-5 w-5 text-muted-foreground" />
-            </button>
-            
-            <img 
-                src={`/storage/${banner.image_path}`} 
-                alt={banner.title} 
-                className="h-20 w-32 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity" 
-                onClick={() => onImageClick(`/storage/${banner.image_path}`, banner.title)}
-            />
-            
-            <div className="flex-1">
-                <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">{banner.title}</h3>
-                    <Badge variant={banner.is_active ? 'default' : 'secondary'}>
-                        {banner.is_active ? t('banners.active') : t('banners.inactive')}
-                    </Badge>
-                    <Badge variant="outline">#{banner.order}</Badge>
+        <div ref={setNodeRef} style={style} className="group relative rounded-lg border bg-card p-4 hover:bg-accent/50">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing self-start sm:self-center">
+                    <GripVertical className="h-5 w-5 text-muted-foreground" />
+                </button>
+                
+                <img 
+                    src={`/storage/${banner.image_path}`} 
+                    alt={banner.title} 
+                    className="h-32 w-full sm:h-20 sm:w-32 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+                    onClick={() => onImageClick(`/storage/${banner.image_path}`, banner.title)}
+                />
+                
+                <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 className="font-semibold truncate">{banner.title}</h3>
+                        <Badge variant={banner.is_active ? 'default' : 'secondary'}>
+                            {banner.is_active ? t('banners.active') : t('banners.inactive')}
+                        </Badge>
+                        <Badge variant="outline">#{banner.order}</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{banner.description || t('banners.no_description')}</p>
+                    <Badge variant="secondary">{banner.supplier.name}</Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">{banner.description || t('banners.no_description')}</p>
-                <Badge variant="secondary" className="mt-1">{banner.supplier.name}</Badge>
-            </div>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}`)}>
-                        <Eye className="mr-2 h-4 w-4" />
-                        {t('banners.view')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}/edit`)}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                        {t('banners.edit')}
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onDelete(banner.id, banner.title)} className="text-destructive">
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        {t('banners.delete')}
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}`)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            {t('banners.view')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}/edit`)}>
+                            <Pencil className="mr-2 h-4 w-4" />
+                            {t('banners.edit')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(banner.id, banner.title)} className="text-destructive">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            {t('banners.delete')}
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
         </div>
     );
 }
@@ -296,7 +298,7 @@ export default function BannersIndex({ banners }: Props) {
                         <AlertDialogCancel onClick={() => setDeleteDialog({ open: false, id: null, title: '' })}>
                             {t('banners.delete_cancel')}
                         </AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 !text-white">
                             {t('banners.delete_confirm')}
                         </AlertDialogAction>
                     </AlertDialogFooter>

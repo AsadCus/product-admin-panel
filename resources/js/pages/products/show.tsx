@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import BackButton from '@/components/back-button';
 import Heading from '@/components/heading';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
