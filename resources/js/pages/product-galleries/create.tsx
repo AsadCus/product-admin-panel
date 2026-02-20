@@ -1,0 +1,204 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+import { X } from 'lucide-react';
+import { useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem } from '@/types';
+import Heading from '@/components/heading';
+import { Button } from '@/components/ui/button';
+import BackButton from '@/components/back-button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import InputError from '@/components/input-error';
+
+interface Product {
+    id: number;
+    name: string;
+}
+
+interface Props {
+    products: Product[];
+}
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { title: 'Galleries', href: '/product-galleries' },
+    { title: 'Create', href: '/product-galleries/create' },
+];
+export default function ProductGalleryCreate({ products }: Props) {
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    
+    const { data, setData, post, processing, errors } = useForm<{
+        file: File | null;
+        product_id: string;
+        order: string;
+    }>({
+        file: null,
+        product_id: '',
+        order: '1',
+    });
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('file', file);
+            
+            // Create preview URL
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewUrl(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const clearPreview = () => {
+        setPreviewUrl(null);
+        setData('file', null);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post('/product-galleries', {
+            forceFormData: true,
+        });
+    };
+
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Create Gallery" />
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                <div className="flex items-center gap-4">
+                    <BackButton />
+                    <Heading
+                        title="Create Gallery"
+                        description="Add a new product gallery"
+                    />
+                </div>
+
+                <div className="flex justify-center">
+                    <Card className="w-full max-w-2xl">
+                        <CardHeader>
+                            <CardTitle>Gallery Information</CardTitle>
+                            <CardDescription>
+                                Fill in the details below to create a new gallery
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="file">Image File</Label>
+                                    <Input
+                                        id="file"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
+                                    <InputError message={errors.file} />
+                                    {data.file && (
+                                        <p className="text-sm text-muted-foreground">
+                                            Selected: {data.file.name} ({(data.file.size / 1024).toFixed(2)} KB)
+                                        </p>
+                                    )}
+                                </div>
+
+                                {previewUrl && (
+                                    <div className="space-y-2">
+                                        <Label>Image Preview</Label>
+                                        <div className="relative rounded-lg border overflow-hidden bg-muted">
+                                            <img 
+                                                src={previewUrl} 
+                                                alt="Preview"
+                                                className="w-full h-auto max-h-96 object-contain"
+                                            />
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="icon"
+                                                className="absolute top-2 right-2"
+                                                onClick={clearPreview}
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="product">Product</Label>
+                                    <Select
+                                        value={data.product_id}
+                                        onValueChange={(value) =>
+                                            setData('product_id', value)
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a product" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {products.map((product) => (
+                                                <SelectItem
+                                                    key={product.id}
+                                                    value={product.id.toString()}
+                                                >
+                                                    {product.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.product_id} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="order">Order</Label>
+                                    <Input
+                                        id="order"
+                                        type="number"
+                                        min="1"
+                                        value={data.order}
+                                        onChange={(e) =>
+                                            setData('order', e.target.value)
+                                        }
+                                        placeholder="1"
+                                    />
+                                    <InputError message={errors.order} />
+                                    <p className="text-sm text-muted-foreground">
+                                        Display order (1 = first). Must be unique for this product.
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <Button type="submit" disabled={processing}>
+                                        {processing ? 'Creating...' : 'Create Gallery'}
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        asChild
+                                    >
+                                        <Link href="/product-galleries">
+                                            Cancel
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </AppLayout>
+    );
+}
