@@ -1,11 +1,10 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { X } from 'lucide-react';
 import { useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
-import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
 import BackButton from '@/components/back-button';
+import Heading from '@/components/heading';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -22,7 +21,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import InputError from '@/components/input-error';
+import AppLayout from '@/layouts/app-layout';
+import type { BreadcrumbItem } from '@/types';
 
 interface Product {
     id: number;

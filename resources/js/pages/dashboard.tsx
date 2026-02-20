@@ -7,16 +7,6 @@ import {
     FolderTree,
     TrendingUp,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
-import products from '@/routes/products';
-import productCategories from '@/routes/product-categories';
-import suppliers from '@/routes/suppliers';
-import productGalleries from '@/routes/product-galleries';
-import type { BreadcrumbItem } from '@/types';
-import { useTranslation } from '@/translations';
 import {
     BarChart,
     Bar,
@@ -30,6 +20,16 @@ import {
     Cell,
     Legend,
 } from 'recharts';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import AppLayout from '@/layouts/app-layout';
+import { dashboard } from '@/routes';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
+import productCategories from '@/routes/product-categories';
+import productGalleries from '@/routes/product-galleries';
+import products from '@/routes/products';
+import suppliers from '@/routes/suppliers';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

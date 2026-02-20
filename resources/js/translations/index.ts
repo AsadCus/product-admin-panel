@@ -1,6 +1,6 @@
+import type { Language } from '@/hooks/use-language';
 import { en, type TranslationKey } from './en';
 import { id } from './id';
-import type { Language } from '@/hooks/use-language';
 
 const translations = {
     en,

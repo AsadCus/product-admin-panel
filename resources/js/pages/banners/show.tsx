@@ -1,12 +1,12 @@
 import { Head, Link } from '@inertiajs/react';
 import { Pencil } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
-import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
 import BackButton from '@/components/back-button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import AppLayout from '@/layouts/app-layout';
 
 interface Banner {
     id: number;

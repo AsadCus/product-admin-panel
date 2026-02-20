@@ -1,12 +1,12 @@
-import * as React from 'react';
+import type {
+    DragEndEvent} from '@dnd-kit/core';
 import {
     DndContext,
     closestCenter,
     KeyboardSensor,
     PointerSensor,
     useSensor,
-    useSensors,
-    DragEndEvent,
+    useSensors
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -16,13 +16,15 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import type {
+    ColumnDef} from '@tanstack/react-table';
 import {
-    ColumnDef,
     flexRender,
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table';
 import { GripVertical } from 'lucide-react';
+import * as React from 'react';
 import {
     Table,
     TableBody,

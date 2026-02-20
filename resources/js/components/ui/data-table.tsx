@@ -1,9 +1,9 @@
-import * as React from "react"
-import {
+import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
+  VisibilityState} from "@tanstack/react-table";
+import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -12,6 +12,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { ChevronDown, Settings, Trash2, Plus } from "lucide-react"
+import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import {

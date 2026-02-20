@@ -1,11 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
 import axios from 'axios';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
+import { Plus } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { useTranslation } from '@/translations';
 import {
     Card,
     CardContent,
@@ -14,6 +11,9 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { SortableDataTable } from '@/components/ui/sortable-data-table';
+import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
 import { useCategoryColumns, type Category } from './columns';
 
 interface Props {
