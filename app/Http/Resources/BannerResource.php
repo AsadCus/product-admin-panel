@@ -19,7 +19,7 @@ class BannerResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'image_path' => $this->image_path,
-            'image_url' => $this->image_path ? asset('storage/' . $this->image_path) : null,
+            'image_url' => $this->image_path ? asset('storage/'.$this->image_path) : null,
             'supplier_id' => $this->supplier_id,
             'supplier' => new SupplierResource($this->whenLoaded('supplier')),
             'is_active' => $this->is_active,

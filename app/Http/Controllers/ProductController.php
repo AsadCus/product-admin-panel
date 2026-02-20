@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\RedirectResponse;
@@ -74,7 +73,7 @@ class ProductController extends Controller
                     return [
                         'id' => $gallery->id,
                         'file_path' => $gallery->file_path,
-                        'file_url' => $gallery->file_path ? asset('storage/' . $gallery->file_path) : null,
+                        'file_url' => $gallery->file_path ? asset('storage/'.$gallery->file_path) : null,
                         'order' => $gallery->order,
                     ];
                 }),

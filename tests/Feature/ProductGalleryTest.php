@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\ProductGallery;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductGalleryTest extends TestCase
@@ -29,13 +31,16 @@ class ProductGalleryTest extends TestCase
 
     public function test_authenticated_users_can_create_product_gallery(): void
     {
+        Storage::fake('public');
+        
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $product = Product::factory()->create();
+        $file = UploadedFile::fake()->image('test.jpg');
 
         $galleryData = [
-            'file_path' => 'images/test.jpg',
+            'file' => $file,
             'product_id' => $product->id,
             'order' => 1,
         ];
@@ -43,7 +48,12 @@ class ProductGalleryTest extends TestCase
         $response = $this->post(route('product-galleries.store'), $galleryData);
         $response->assertRedirect(route('product-galleries.index'));
 
-        $this->assertDatabaseHas('product_galleries', $galleryData);
+        $this->assertDatabaseHas('product_galleries', [
+            'product_id' => $product->id,
+            'order' => 1,
+        ]);
+        
+        Storage::disk('public')->assertExists('product-galleries/' . $file->hashName());
     }
 
     public function test_product_gallery_file_path_is_required(): void
@@ -58,16 +68,20 @@ class ProductGalleryTest extends TestCase
             'order' => 1,
         ]);
 
-        $response->assertSessionHasErrors('file_path');
+        $response->assertSessionHasErrors('file');
     }
 
     public function test_product_gallery_product_id_is_required(): void
     {
+        Storage::fake('public');
+        
         $user = User::factory()->create();
         $this->actingAs($user);
 
+        $file = UploadedFile::fake()->image('test.jpg');
+
         $response = $this->post(route('product-galleries.store'), [
-            'file_path' => 'images/test.jpg',
+            'file' => $file,
             'order' => 1,
         ]);
 
@@ -76,13 +90,16 @@ class ProductGalleryTest extends TestCase
 
     public function test_authenticated_users_can_update_product_gallery(): void
     {
+        Storage::fake('public');
+        
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $gallery = ProductGallery::factory()->create();
+        $file = UploadedFile::fake()->image('updated.jpg');
 
         $updatedData = [
-            'file_path' => 'images/updated.jpg',
+            'file' => $file,
             'product_id' => $gallery->product_id,
             'order' => 5,
         ];
@@ -90,7 +107,12 @@ class ProductGalleryTest extends TestCase
         $response = $this->put(route('product-galleries.update', $gallery), $updatedData);
         $response->assertRedirect(route('product-galleries.index'));
 
-        $this->assertDatabaseHas('product_galleries', $updatedData);
+        $this->assertDatabaseHas('product_galleries', [
+            'product_id' => $gallery->product_id,
+            'order' => 5,
+        ]);
+        
+        Storage::disk('public')->assertExists('product-galleries/' . $file->hashName());
     }
 
     public function test_authenticated_users_can_delete_product_gallery(): void

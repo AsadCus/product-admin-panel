@@ -28,22 +28,19 @@ export default function ProductCategoriesIndex({ categories }: Props) {
         { title: t('categories.title'), href: '/product-categories' },
     ];
 
-    const handleReorder = async (newData: Category[]) => {
-        try {
-            const categoriesWithOrder = newData.map((category, index) => ({
-                id: category.id,
-                order: index,
-            }));
-
-            await axios.post('/api/categories/reorder', {
-                categories: categoriesWithOrder,
+    const handleBulkDelete = (selectedCategories: Category[]) => {
+        if (confirm(`${t('common.confirm_delete')} ${selectedCategories.length} ${t('categories.title').toLowerCase()}?`)) {
+            const ids = selectedCategories.map(category => category.id);
+            router.post('/product-categories/bulk-delete', { ids }, {
+                onSuccess: () => {
+                    router.reload();
+                }
             });
-
-            router.reload({ only: ['categories'] });
-        } catch (error) {
-            console.error('Failed to reorder categories:', error);
-            alert('Gagal memperbarui urutan kategori');
         }
+    };
+
+    const handleBulkAdd = (selectedCategories: Category[]) => {
+        console.log('Bulk add:', selectedCategories);
     };
 
     return (
@@ -68,14 +65,19 @@ export default function ProductCategoriesIndex({ categories }: Props) {
                     <CardHeader>
                         <CardTitle>{t('categories.all')}</CardTitle>
                         <CardDescription>
-                            {t('categories.list')} - Drag untuk mengubah urutan
+                            {t('categories.list')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <SortableDataTable
+                        <DataTable
                             columns={columns}
                             data={categories}
-                            onReorder={handleReorder}
+                            searchKey="name"
+                            searchPlaceholder={t('categories.search_placeholder')}
+                            onBulkDelete={handleBulkDelete}
+                            onBulkAdd={handleBulkAdd}
+                            bulkDeleteLabel={t('common.delete_selected')}
+                            bulkAddLabel={t('common.add_selected')}
                         />
                     </CardContent>
                 </Card>

@@ -15,23 +15,25 @@ class BannerController extends Controller
     public function index(): Response
     {
         $banners = Banner::with('supplier')->orderBy('supplier_id')->orderBy('order')->get();
+
         return Inertia::render('banners/index', ['banners' => ['data' => $banners]]);
     }
 
     public function create(): Response
     {
         $suppliers = Supplier::orderBy('name')->get(['id', 'name']);
+
         return Inertia::render('banners/create', ['suppliers' => $suppliers]);
     }
 
     public function store(StoreBannerRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        
+
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('banners', 'public');
         }
-        
+
         unset($validated['image']);
         Banner::create($validated);
 
@@ -41,26 +43,28 @@ class BannerController extends Controller
     public function show(Banner $banner): Response
     {
         $banner->load('supplier');
+
         return Inertia::render('banners/show', ['banner' => $banner]);
     }
 
     public function edit(Banner $banner): Response
     {
         $suppliers = Supplier::orderBy('name')->get(['id', 'name']);
+
         return Inertia::render('banners/edit', ['banner' => $banner, 'suppliers' => $suppliers]);
     }
 
     public function update(UpdateBannerRequest $request, Banner $banner): RedirectResponse
     {
         $validated = $request->validated();
-        
+
         if ($request->hasFile('image')) {
             if ($banner->image_path && \Storage::disk('public')->exists($banner->image_path)) {
                 \Storage::disk('public')->delete($banner->image_path);
             }
             $validated['image_path'] = $request->file('image')->store('banners', 'public');
         }
-        
+
         unset($validated['image']);
         $banner->update($validated);
 
@@ -72,8 +76,9 @@ class BannerController extends Controller
         if ($banner->image_path && \Storage::disk('public')->exists($banner->image_path)) {
             \Storage::disk('public')->delete($banner->image_path);
         }
-        
+
         $banner->delete();
+
         return redirect()->route('banners.index');
     }
 

@@ -25,7 +25,7 @@ class PublicProductController extends Controller
 
         // Search by product name
         if ($request->has('search') && $request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         $products = $query->latest()->get();
@@ -36,7 +36,7 @@ class PublicProductController extends Controller
     public function show(Product $product)
     {
         $product->load(['supplier', 'category', 'galleries']);
-        
+
         return new ProductResource($product);
     }
 }

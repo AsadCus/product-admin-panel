@@ -23,7 +23,7 @@ class UpdateProductGalleryRequest extends FormRequest
     public function rules(): array
     {
         $galleryId = $this->route('product_gallery')?->id;
-        
+
         return [
             'file' => ['nullable', 'file', 'image', 'max:2048'], // optional for update
             'product_id' => ['required', 'exists:products,id'],
@@ -36,9 +36,9 @@ class UpdateProductGalleryRequest extends FormRequest
                         ->where('order', $value)
                         ->where('id', '!=', $galleryId)
                         ->exists();
-                    
+
                     if ($exists) {
-                        $fail('Order ' . $value . ' sudah digunakan untuk produk ini. Silakan pilih order yang berbeda.');
+                        $fail('Order '.$value.' sudah digunakan untuk produk ini. Silakan pilih order yang berbeda.');
                     }
                 },
             ],

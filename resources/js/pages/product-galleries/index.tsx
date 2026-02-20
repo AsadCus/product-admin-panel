@@ -37,9 +37,10 @@ interface Props {
 interface SortableGalleryItemProps {
     gallery: Gallery;
     onDelete: (id: number, productName: string) => void;
+    onImageClick: (imageSrc: string, title: string) => void;
 }
 
-function SortableGalleryItem({ gallery, onDelete }: SortableGalleryItemProps) {
+function SortableGalleryItem({ gallery, onDelete, onImageClick }: SortableGalleryItemProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: gallery.id });
 
     const style = {
@@ -54,7 +55,12 @@ function SortableGalleryItem({ gallery, onDelete }: SortableGalleryItemProps) {
                 <GripVertical className="h-5 w-5 text-muted-foreground" />
             </button>
             
-            <img src={`/storage/${gallery.file_path}`} alt={`Gallery ${gallery.order}`} className="h-20 w-32 rounded object-cover" />
+            <img 
+                src={`/storage/${gallery.file_path}`} 
+                alt={`Gallery ${gallery.order}`} 
+                className="h-20 w-32 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+                onClick={() => onImageClick(`/storage/${gallery.file_path}`, `${gallery.product.name} - Image ${gallery.order}`)}
+            />
             
             <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -136,6 +142,11 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
     }>);
 
     const [supplierData, setSupplierData] = useState(groupedGalleries);
+    const [imagePreview, setImagePreview] = useState<{ open: boolean; src: string; title: string }>({
+        open: false,
+        src: '',
+        title: '',
+    });
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -222,6 +233,10 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
         confirmDelete(`/product-galleries/${id}`, productName);
     };
 
+    const handleImageClick = (src: string, title: string) => {
+        setImagePreview({ open: true, src, title });
+    };
+
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('galleries.title'), href: '/product-galleries' },
     ];
@@ -280,7 +295,12 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
                                                 <SortableContext items={items.map((g) => g.id)} strategy={verticalListSortingStrategy}>
                                                     <div className="space-y-2">
                                                         {items.map((gallery) => (
-                                                            <SortableGalleryItem key={gallery.id} gallery={gallery} onDelete={handleDelete} />
+                                                            <SortableGalleryItem 
+                                                                key={gallery.id} 
+                                                                gallery={gallery} 
+                                                                onDelete={handleDelete} 
+                                                                onImageClick={handleImageClick}
+                                                            />
                                                         ))}
                                                     </div>
                                                 </SortableContext>
@@ -294,6 +314,13 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
                 ))}
             </div>
             <DeleteConfirmationDialog />
+            <ImagePreviewDialog
+                open={imagePreview.open}
+                onOpenChange={(open) => setImagePreview({ ...imagePreview, open })}
+                imageSrc={imagePreview.src}
+                imageAlt={imagePreview.title}
+                title={imagePreview.title}
+            />
         </AppLayout>
     );
 }

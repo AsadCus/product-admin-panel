@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductGallery;
 use App\Models\Supplier;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -49,7 +48,7 @@ class DashboardController extends Controller
             ->orderBy('products_count', 'desc')
             ->limit(5)
             ->get()
-            ->map(fn($supplier) => [
+            ->map(fn ($supplier) => [
                 'name' => $supplier->name,
                 'count' => $supplier->products_count,
             ]);
@@ -64,7 +63,7 @@ class DashboardController extends Controller
             ->orderBy('products_count', 'desc')
             ->limit(5)
             ->get()
-            ->map(fn($category) => [
+            ->map(fn ($category) => [
                 'name' => $category->name,
                 'count' => $category->products_count,
             ]);
@@ -79,7 +78,7 @@ class DashboardController extends Controller
             ->latest()
             ->limit(5)
             ->get()
-            ->map(fn($product) => [
+            ->map(fn ($product) => [
                 'id' => $product->id,
                 'name' => $product->name,
                 'supplier' => $product->supplier->name,
@@ -97,7 +96,7 @@ class DashboardController extends Controller
             ->orderBy('name')
             ->limit(10)
             ->get()
-            ->map(fn($category) => [
+            ->map(fn ($category) => [
                 'id' => $category->id,
                 'name' => $category->name,
                 'supplier' => $category->supplier->name,
@@ -114,7 +113,7 @@ class DashboardController extends Controller
             ->orderBy('name')
             ->limit(10)
             ->get()
-            ->map(fn($product) => [
+            ->map(fn ($product) => [
                 'id' => $product->id,
                 'name' => $product->name,
                 'supplier' => $product->supplier->name,
