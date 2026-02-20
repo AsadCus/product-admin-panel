@@ -1,6 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,9 +9,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import type { BreadcrumbItem } from '@/types';
-import { useTranslation } from '@/translations';
 import { DataTable } from '@/components/ui/data-table';
+import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
 import { useProductColumns, type Product } from './columns';
 
 interface Props {

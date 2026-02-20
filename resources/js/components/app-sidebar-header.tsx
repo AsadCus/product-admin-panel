@@ -1,5 +1,5 @@
+import { Moon, Sun, Languages, Check } from 'lucide-react';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -7,7 +7,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Moon, Sun, Languages, Check } from 'lucide-react';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useLanguage } from '@/hooks/use-language';
 import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';

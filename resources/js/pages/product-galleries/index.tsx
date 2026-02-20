@@ -1,20 +1,20 @@
-import { Head, Link, router } from '@inertiajs/react';
-import { useState } from 'react';
-import { Plus, GripVertical, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, GripVertical, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
 import Heading from '@/components/heading';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useTranslation } from '@/translations';
 import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
-import { ImagePreviewDialog } from '@/components/image-preview-dialog';
+import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
 
 interface Gallery {
     id: number;

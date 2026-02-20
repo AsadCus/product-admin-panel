@@ -22,13 +22,13 @@ import {
     SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import products from '@/routes/products';
-import productCategories from '@/routes/product-categories';
-import suppliers from '@/routes/suppliers';
-import productGalleries from '@/routes/product-galleries';
+import { useTranslation } from '@/translations';
 import type { NavItem } from '@/types';
 import AppLogo from './app-logo';
-import { useTranslation } from '@/translations';
+import productCategories from '@/routes/product-categories';
+import productGalleries from '@/routes/product-galleries';
+import products from '@/routes/products';
+import suppliers from '@/routes/suppliers';
 
 export function AppSidebar() {
     const { t } = useTranslation();

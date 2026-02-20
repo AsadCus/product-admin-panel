@@ -1,11 +1,11 @@
-import { ColumnDef } from "@tanstack/react-table"
 import { router } from "@inertiajs/react"
+import type { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import { DataTableRowActions } from "@/components/ui/data-table-row-actions"
-import { useTranslation } from "@/translations"
 import { useDeleteConfirmation } from "@/hooks/use-delete-confirmation"
+import { useTranslation } from "@/translations"
 
 export interface Supplier {
   id: number

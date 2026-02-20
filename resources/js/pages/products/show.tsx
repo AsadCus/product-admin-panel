@@ -1,31 +1,12 @@
-import { Head, Link, router } from '@inertiajs/react';
-import { Pencil, Package, Trash2, GripVertical } from 'lucide-react';
-import { useState } from 'react';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
-import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
-import BackButton from '@/components/back-button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { useTranslation } from '@/translations';
-import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
-import { ImagePreviewDialog } from '@/components/image-preview-dialog';
+import type {
+    DragEndEvent} from '@dnd-kit/core';
 import {
     DndContext,
     closestCenter,
     KeyboardSensor,
     PointerSensor,
     useSensor,
-    useSensors,
-    DragEndEvent,
+    useSensors
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -35,7 +16,26 @@ import {
     rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Head, Link, router } from '@inertiajs/react';
+import { Pencil, Package, Trash2, GripVertical } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
+import BackButton from '@/components/back-button';
+import Heading from '@/components/heading';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
+import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
 
 interface Supplier {
     id: number;
