@@ -10,7 +10,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { SortableDataTable } from '@/components/ui/sortable-data-table';
+import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
 import type { BreadcrumbItem } from '@/types';

@@ -15,8 +15,11 @@ export function t(key: TranslationKey, lang?: Language): string {
 export function useTranslation() {
     const language = (localStorage.getItem('language') as Language) || 'en';
     
+    const translateFn = (key: TranslationKey) => t(key, language);
+    
     return {
-        t: (key: TranslationKey) => t(key, language),
+        t: translateFn,
+        translate: translateFn, // Alias yang lebih deskriptif
         language,
     };
 }

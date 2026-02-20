@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
