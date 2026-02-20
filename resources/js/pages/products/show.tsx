@@ -17,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/translations';
 import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import {
     DndContext,
     closestCenter,
@@ -67,6 +68,7 @@ interface SortableGalleryItemProps {
     gallery: Gallery;
     productName: string;
     onDelete: (url: string, name: string) => void;
+    onImageClick: (imageSrc: string, title: string) => void;
     t: (key: any) => string;
 }
 
@@ -74,6 +76,7 @@ function SortableGalleryItem({
     gallery,
     productName,
     onDelete,
+    onImageClick,
     t,
 }: SortableGalleryItemProps) {
     const {
@@ -97,7 +100,7 @@ function SortableGalleryItem({
             style={style}
             className="group relative overflow-hidden rounded-lg border"
         >
-            <div className="aspect-square">
+            <div className="aspect-square cursor-pointer" onClick={() => onImageClick(gallery.file_url || '', `${productName} - #${gallery.order}`)}>
                 {gallery.file_url ? (
                     <img
                         src={gallery.file_url}
@@ -169,6 +172,11 @@ export default function ProductShow({ product }: Props) {
     });
 
     const [galleries, setGalleries] = useState<Gallery[]>(product.galleries);
+    const [imagePreview, setImagePreview] = useState<{ open: boolean; src: string; title: string }>({
+        open: false,
+        src: '',
+        title: '',
+    });
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -224,6 +232,10 @@ export default function ProductShow({ product }: Props) {
     // Debug: log the product data
     console.log('Product data:', product);
     console.log('Galleries:', product.galleries);
+
+    const handleImageClick = (src: string, title: string) => {
+        setImagePreview({ open: true, src, title });
+    };
 
     const breadcrumbs: BreadcrumbItem[] = [
         { title: t('products.title'), href: '/products' },
@@ -365,6 +377,7 @@ export default function ProductShow({ product }: Props) {
                                                     gallery={gallery}
                                                     productName={product.name}
                                                     onDelete={confirmDelete}
+                                                    onImageClick={handleImageClick}
                                                     t={t}
                                                 />
                                             ))}
@@ -401,6 +414,14 @@ export default function ProductShow({ product }: Props) {
                     </CardContent>
                 </Card>
             </div>
+            
+            <ImagePreviewDialog
+                open={imagePreview.open}
+                onOpenChange={(open) => setImagePreview({ ...imagePreview, open })}
+                imageSrc={imagePreview.src}
+                imageAlt={imagePreview.title}
+                title={imagePreview.title}
+            />
         </AppLayout>
     );
 }
