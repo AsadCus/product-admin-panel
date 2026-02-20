@@ -22,6 +22,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useTranslation } from '@/translations';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 
 interface Banner {
     id: number;
@@ -40,10 +41,11 @@ interface Props {
 interface SortableBannerItemProps {
     banner: Banner;
     onDelete: (id: number, title: string) => void;
+    onImageClick: (imageSrc: string, title: string) => void;
     t: ReturnType<typeof useTranslation>['t'];
 }
 
-function SortableBannerItem({ banner, onDelete, t }: SortableBannerItemProps) {
+function SortableBannerItem({ banner, onDelete, onImageClick, t }: SortableBannerItemProps) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: banner.id });
 
     const style = {
@@ -58,7 +60,12 @@ function SortableBannerItem({ banner, onDelete, t }: SortableBannerItemProps) {
                 <GripVertical className="h-5 w-5 text-muted-foreground" />
             </button>
             
-            <img src={`/storage/${banner.image_path}`} alt={banner.title} className="h-20 w-32 rounded object-cover" />
+            <img 
+                src={`/storage/${banner.image_path}`} 
+                alt={banner.title} 
+                className="h-20 w-32 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity" 
+                onClick={() => onImageClick(`/storage/${banner.image_path}`, banner.title)}
+            />
             
             <div className="flex-1">
                 <div className="flex items-center gap-2">
@@ -119,6 +126,11 @@ export default function BannersIndex({ banners }: Props) {
         id: null,
         title: '',
     });
+    const [imagePreview, setImagePreview] = useState<{ open: boolean; src: string; title: string }>({
+        open: false,
+        src: '',
+        title: '',
+    });
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -172,6 +184,10 @@ export default function BannersIndex({ banners }: Props) {
 
     const handleDelete = (id: number, title: string) => {
         setDeleteDialog({ open: true, id, title });
+    };
+
+    const handleImageClick = (src: string, title: string) => {
+        setImagePreview({ open: true, src, title });
     };
 
     const confirmDelete = () => {
@@ -251,7 +267,13 @@ export default function BannersIndex({ banners }: Props) {
                                 <SortableContext items={items.map((b) => b.id)} strategy={verticalListSortingStrategy}>
                                     <div className="space-y-2">
                                         {items.map((banner) => (
-                                            <SortableBannerItem key={banner.id} banner={banner} onDelete={handleDelete} t={t} />
+                                            <SortableBannerItem 
+                                                key={banner.id} 
+                                                banner={banner} 
+                                                onDelete={handleDelete} 
+                                                onImageClick={handleImageClick}
+                                                t={t} 
+                                            />
                                         ))}
                                     </div>
                                 </SortableContext>
@@ -279,6 +301,14 @@ export default function BannersIndex({ banners }: Props) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            <ImagePreviewDialog
+                open={imagePreview.open}
+                onOpenChange={(open) => setImagePreview({ ...imagePreview, open })}
+                imageSrc={imagePreview.src}
+                imageAlt={imagePreview.title}
+                title={imagePreview.title}
+            />
         </AppLayout>
     );
 }

@@ -102,4 +102,17 @@ class ProductCategoryController extends Controller
         return redirect()->route('product-categories.index')
             ->with('success', 'Kategori berhasil dihapus.');
     }
+
+    public function bulkDelete(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:product_categories,id',
+        ]);
+
+        ProductCategory::whereIn('id', $validated['ids'])->delete();
+
+        return redirect()->route('product-categories.index')
+            ->with('success', count($validated['ids']) . ' kategori berhasil dihapus.');
+    }
 }

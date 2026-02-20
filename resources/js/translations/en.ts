@@ -234,6 +234,33 @@ export const en = {
     // Bulk Actions
     'common.delete_selected': 'Delete Selected',
     'common.add_selected': 'Add Selected',
+
+    // Auth
+    'auth.login_title': 'Log in to your account',
+    'auth.login_description': 'Enter your email and password below to log in',
+    'auth.register_title': 'Create an account',
+    'auth.register_description': 'Enter your details below to create your account',
+    'auth.email': 'Email address',
+    'auth.password': 'Password',
+    'auth.password_confirmation': 'Confirm password',
+    'auth.name': 'Name',
+    'auth.remember_me': 'Remember me',
+    'auth.forgot_password': 'Forgot password?',
+    'auth.login_button': 'Log in',
+    'auth.register_button': 'Create account',
+    'auth.no_account': "Don't have an account?",
+    'auth.have_account': 'Already have an account?',
+    'auth.sign_up': 'Sign up',
+    'auth.log_in': 'Log in',
+    'auth.full_name': 'Full name',
+    'auth.confirm_password': 'Confirm password',
+    'auth.forgot_password_title': 'Forgot password',
+    'auth.forgot_password_description': 'Enter your email to receive a password reset link',
+    'auth.email_reset_link': 'Email password reset link',
+    'auth.return_to_login': 'Or, return to',
+    'auth.reset_password_title': 'Reset password',
+    'auth.reset_password_description': 'Please enter your new password below',
+    'auth.reset_password_button': 'Reset password',
 };
 
 export type TranslationKey = keyof typeof en;

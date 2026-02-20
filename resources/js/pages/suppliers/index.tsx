@@ -43,6 +43,12 @@ export default function SuppliersIndex({ suppliers }: Props) {
         }
     };
 
+    const handleBulkAdd = (selectedRows: Supplier[]) => {
+        console.log('Bulk add:', selectedRows);
+        // You can implement bulk add functionality here
+        // For example: add to favorites, export, etc.
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={t('suppliers.title')} />
@@ -75,7 +81,9 @@ export default function SuppliersIndex({ suppliers }: Props) {
                             searchKey="name"
                             searchPlaceholder={t('suppliers.search_placeholder')}
                             onBulkDelete={handleBulkDelete}
+                            onBulkAdd={handleBulkAdd}
                             bulkDeleteLabel={t('common.delete_selected')}
+                            bulkAddLabel={t('common.add_selected')}
                         />
                     </CardContent>
                 </Card>
