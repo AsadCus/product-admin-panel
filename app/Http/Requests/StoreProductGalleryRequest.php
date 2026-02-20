@@ -33,9 +33,9 @@ class StoreProductGalleryRequest extends FormRequest
                     $exists = \App\Models\ProductGallery::where('product_id', $this->product_id)
                         ->where('order', $value)
                         ->exists();
-                    
+
                     if ($exists) {
-                        $fail('Order ' . $value . ' sudah digunakan untuk produk ini. Silakan pilih order yang berbeda.');
+                        $fail('Order '.$value.' sudah digunakan untuk produk ini. Silakan pilih order yang berbeda.');
                     }
                 },
             ],

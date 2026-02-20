@@ -47,7 +47,7 @@ class ProductGalleryController extends Controller
     public function store(StoreProductGalleryRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        
+
         // Handle file upload
         if ($request->hasFile('file')) {
             $file = $request->file('file');
@@ -56,9 +56,9 @@ class ProductGalleryController extends Controller
             $path = $file->store('product-galleries', 'public');
             $validated['file_path'] = $path;
         }
-        
+
         unset($validated['file']);
-        
+
         ProductGallery::create($validated);
 
         return redirect()->route('product-galleries.index')
@@ -98,14 +98,14 @@ class ProductGalleryController extends Controller
     public function update(UpdateProductGalleryRequest $request, ProductGallery $productGallery): RedirectResponse
     {
         $validated = $request->validated();
-        
+
         // Handle file upload if new file is provided
         if ($request->hasFile('file')) {
             // Delete old file if exists
             if ($productGallery->file_path && \Storage::disk('public')->exists($productGallery->file_path)) {
                 \Storage::disk('public')->delete($productGallery->file_path);
             }
-            
+
             $file = $request->file('file');
             // $filename = time() . '_' . $file->getClientOriginalName();
             // $path = $file->store('product-galleries', $filename, 'public');
@@ -113,9 +113,9 @@ class ProductGalleryController extends Controller
 
             $validated['file_path'] = $path;
         }
-        
+
         unset($validated['file']);
-        
+
         $productGallery->update($validated);
 
         return redirect()->route('product-galleries.index')
@@ -131,7 +131,7 @@ class ProductGalleryController extends Controller
         if ($productGallery->file_path && \Storage::disk('public')->exists($productGallery->file_path)) {
             \Storage::disk('public')->delete($productGallery->file_path);
         }
-        
+
         $productGallery->delete();
 
         return redirect()->route('product-galleries.index')

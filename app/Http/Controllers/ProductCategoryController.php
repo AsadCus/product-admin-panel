@@ -113,6 +113,6 @@ class ProductCategoryController extends Controller
         ProductCategory::whereIn('id', $validated['ids'])->delete();
 
         return redirect()->route('product-categories.index')
-            ->with('success', count($validated['ids']) . ' kategori berhasil dihapus.');
+            ->with('success', count($validated['ids']).' kategori berhasil dihapus.');
     }
 }
