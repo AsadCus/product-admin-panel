@@ -24,12 +24,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
-import { useTranslation } from '@/translations';
-import type { BreadcrumbItem } from '@/types';
 import productCategories from '@/routes/product-categories';
 import productGalleries from '@/routes/product-galleries';
 import products from '@/routes/products';
 import suppliers from '@/routes/suppliers';
+import { useTranslation } from '@/translations';
+import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -110,7 +110,7 @@ export default function Dashboard({
 
                 {/* Stats Cards */}
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card className="hover:shadow-lg transition-shadow">
+                    <Card className="transition-shadow hover:shadow-lg">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 {t('dashboard.total_suppliers')}
@@ -137,7 +137,7 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    <Card className="hover:shadow-lg transition-shadow">
+                    <Card className="transition-shadow hover:shadow-lg">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 {t('dashboard.total_categories')}
@@ -164,7 +164,7 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    <Card className="hover:shadow-lg transition-shadow">
+                    <Card className="transition-shadow hover:shadow-lg">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 {t('dashboard.total_products')}
@@ -191,7 +191,7 @@ export default function Dashboard({
                         </CardContent>
                     </Card>
 
-                    <Card className="hover:shadow-lg transition-shadow">
+                    <Card className="transition-shadow hover:shadow-lg">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
                                 {t('dashboard.total_galleries')}
@@ -330,7 +330,7 @@ export default function Dashboard({
                                     {allCategories.map((category) => (
                                         <div
                                             key={category.id}
-                                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent transition-colors"
+                                            className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-accent"
                                         >
                                             <div className="flex-1">
                                                 <p className="font-medium">
@@ -343,10 +343,14 @@ export default function Dashboard({
                                             <div className="flex items-center gap-3">
                                                 <div className="text-right">
                                                     <p className="text-sm font-medium">
-                                                        {category.products_count}
+                                                        {
+                                                            category.products_count
+                                                        }
                                                     </p>
                                                     <p className="text-xs text-muted-foreground">
-                                                        {t('dashboard.products')}
+                                                        {t(
+                                                            'dashboard.products',
+                                                        )}
                                                     </p>
                                                 </div>
                                                 <Button
@@ -365,7 +369,7 @@ export default function Dashboard({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-center text-muted-foreground py-8">
+                                <p className="py-8 text-center text-muted-foreground">
                                     {t('dashboard.no_categories')}
                                 </p>
                             )}
@@ -392,7 +396,7 @@ export default function Dashboard({
                                     {allProducts.map((product) => (
                                         <div
                                             key={product.id}
-                                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent transition-colors"
+                                            className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-accent"
                                         >
                                             <div className="flex-1">
                                                 <p className="font-medium">
@@ -417,7 +421,7 @@ export default function Dashboard({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-center text-muted-foreground py-8">
+                                <p className="py-8 text-center text-muted-foreground">
                                     {t('dashboard.no_products')}
                                 </p>
                             )}
@@ -430,7 +434,9 @@ export default function Dashboard({
                     {/* Recent Products */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('dashboard.recent_products')}</CardTitle>
+                            <CardTitle>
+                                {t('dashboard.recent_products')}
+                            </CardTitle>
                         </CardHeader>
                         <CardContent>
                             {recentProducts.length > 0 ? (
@@ -438,7 +444,7 @@ export default function Dashboard({
                                     {recentProducts.map((product) => (
                                         <div
                                             key={product.id}
-                                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent transition-colors"
+                                            className="flex items-center justify-between rounded-lg border p-3 transition-colors hover:bg-accent"
                                         >
                                             <div>
                                                 <p className="font-medium">
@@ -469,7 +475,7 @@ export default function Dashboard({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-center text-muted-foreground py-8">
+                                <p className="py-8 text-center text-muted-foreground">
                                     {t('dashboard.no_products')}
                                 </p>
                             )}
@@ -479,7 +485,9 @@ export default function Dashboard({
                     {/* Quick Actions */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>{t('dashboard.quick_actions')}</CardTitle>
+                            <CardTitle>
+                                {t('dashboard.quick_actions')}
+                            </CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-2">
                             <Button className="w-full justify-start" asChild>

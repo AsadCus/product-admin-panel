@@ -44,10 +44,10 @@ export default function ProductCategoryCreate({ suppliers }: Props) {
         supplier_id: '',
     });
 
-    const breadcrumbsTranslated: BreadcrumbItem[] = [
-        { title: t('categories.title'), href: '/product-categories' },
-        { title: t('common.create'), href: '/product-categories/create' },
-    ];
+    // const breadcrumbsTranslated: BreadcrumbItem[] = [
+    //     { title: t('categories.title'), href: '/product-categories' },
+    //     { title: t('common.create'), href: '/product-categories/create' },
+    // ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -117,10 +117,7 @@ export default function ProductCategoryCreate({ suppliers }: Props) {
                                 </div>
 
                                 <div className="flex gap-4">
-                                    <Button
-                                        type="submit"
-                                        disabled={processing}
-                                    >
+                                    <Button type="submit" disabled={processing}>
                                         {processing
                                             ? 'Creating...'
                                             : 'Create Category'}

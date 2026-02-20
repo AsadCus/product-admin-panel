@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { ChevronRight, type LucideIcon } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import {
     Collapsible,
     CollapsibleContent,
@@ -25,7 +25,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
+            <SidebarGroupLabel className="text-xs font-semibold tracking-wider text-sidebar-foreground/70 uppercase">
                 {t('nav.navigation')}
             </SidebarGroupLabel>
             <SidebarMenu className="gap-1">

@@ -10,6 +10,7 @@ import { useLanguage } from '@/hooks/use-language';
 
 export function LanguageSwitcher() {
     const { language, updateLanguage } = useLanguage();
+    console.log('Current language:', language);
 
     return (
         <DropdownMenu>

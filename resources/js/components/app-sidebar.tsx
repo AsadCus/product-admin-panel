@@ -19,16 +19,15 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { useTranslation } from '@/translations';
-import type { NavItem } from '@/types';
-import AppLogo from './app-logo';
 import productCategories from '@/routes/product-categories';
 import productGalleries from '@/routes/product-galleries';
 import products from '@/routes/products';
 import suppliers from '@/routes/suppliers';
+import { useTranslation } from '@/translations';
+import type { NavItem } from '@/types';
+import AppLogo from './app-logo';
 
 export function AppSidebar() {
     const { t } = useTranslation();

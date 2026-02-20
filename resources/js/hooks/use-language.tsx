@@ -28,7 +28,7 @@ const subscribe = (callback: () => void) => {
     return () => listeners.delete(callback);
 };
 
-const notify = (): void => listeners.forEach((listener) => listener());
+// const notify = (): void => listeners.forEach((listener) => listener());
 
 export function initializeLanguage(): void {
     if (typeof window === 'undefined') return;

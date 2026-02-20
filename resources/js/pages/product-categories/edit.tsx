@@ -20,7 +20,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { useTranslation } from '@/translations';
 import type { BreadcrumbItem } from '@/types';
 
 interface Supplier {
@@ -45,7 +44,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ProductCategoryEdit({ category, suppliers }: Props) {
-    const { t } = useTranslation();
     const { data, setData, put, processing, errors } = useForm({
         name: category.name,
         supplier_id: category.supplier_id.toString(),
@@ -118,10 +116,7 @@ export default function ProductCategoryEdit({ category, suppliers }: Props) {
                                 </div>
 
                                 <div className="flex gap-4">
-                                    <Button
-                                        type="submit"
-                                        disabled={processing}
-                                    >
+                                    <Button type="submit" disabled={processing}>
                                         {processing
                                             ? 'Updating...'
                                             : 'Update Category'}

@@ -7,6 +7,7 @@ import { Plus, GripVertical, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Heading from '@/components/heading';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,7 +24,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
-import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 
 interface Banner {
     id: number;

@@ -1,12 +1,12 @@
+import { ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
 import { useState } from 'react';
-import { X, ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 
 interface ImagePreviewDialogProps {
     open: boolean;
@@ -88,11 +88,11 @@ export function ImagePreviewDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[95vw] max-h-[95vh] p-0">
+            <DialogContent className="max-h-[95vh] max-w-[95vw] p-0">
                 <DialogHeader className="p-4 pb-2">
                     <DialogTitle>{title || imageAlt}</DialogTitle>
                 </DialogHeader>
-                
+
                 <div className="flex flex-col gap-2 px-4">
                     <div className="flex items-center justify-center gap-2">
                         <Button
@@ -103,7 +103,7 @@ export function ImagePreviewDialog({
                         >
                             <ZoomOut className="h-4 w-4" />
                         </Button>
-                        <span className="text-sm font-medium min-w-[60px] text-center">
+                        <span className="min-w-15 text-center text-sm font-medium">
                             {Math.round(scale * 100)}%
                         </span>
                         <Button
@@ -139,7 +139,7 @@ export function ImagePreviewDialog({
                 </div>
 
                 <div
-                    className="relative overflow-hidden bg-muted/30 flex items-center justify-center"
+                    className="relative flex items-center justify-center overflow-hidden bg-muted/30"
                     style={{ height: 'calc(95vh - 140px)' }}
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
@@ -150,7 +150,7 @@ export function ImagePreviewDialog({
                     <img
                         src={imageSrc}
                         alt={imageAlt}
-                        className="max-w-full max-h-full object-contain transition-transform select-none"
+                        className="max-h-full max-w-full object-contain transition-transform select-none"
                         style={{
                             transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
                             cursor: isDragging ? 'grabbing' : 'grab',

@@ -1,5 +1,4 @@
 import { Head, Link, router } from '@inertiajs/react';
-import axios from 'axios';
 import { Plus } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { SortableDataTable } from '@/components/ui/sortable-data-table';
+import { DataTable } from '@/components/ui/data-table';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
 import type { BreadcrumbItem } from '@/types';
@@ -29,13 +28,21 @@ export default function ProductCategoriesIndex({ categories }: Props) {
     ];
 
     const handleBulkDelete = (selectedCategories: Category[]) => {
-        if (confirm(`${t('common.confirm_delete')} ${selectedCategories.length} ${t('categories.title').toLowerCase()}?`)) {
-            const ids = selectedCategories.map(category => category.id);
-            router.post('/product-categories/bulk-delete', { ids }, {
-                onSuccess: () => {
-                    router.reload();
-                }
-            });
+        if (
+            confirm(
+                `${t('common.confirm_delete')} ${selectedCategories.length} ${t('categories.title').toLowerCase()}?`,
+            )
+        ) {
+            const ids = selectedCategories.map((category) => category.id);
+            router.post(
+                '/product-categories/bulk-delete',
+                { ids },
+                {
+                    onSuccess: () => {
+                        router.reload();
+                    },
+                },
+            );
         }
     };
 
@@ -73,7 +80,9 @@ export default function ProductCategoriesIndex({ categories }: Props) {
                             columns={columns}
                             data={categories}
                             searchKey="name"
-                            searchPlaceholder={t('categories.search_placeholder')}
+                            searchPlaceholder={t(
+                                'categories.search_placeholder',
+                            )}
                             onBulkDelete={handleBulkDelete}
                             onBulkAdd={handleBulkAdd}
                             bulkDeleteLabel={t('common.delete_selected')}

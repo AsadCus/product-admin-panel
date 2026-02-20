@@ -57,7 +57,7 @@ function SortableRow({ row, children }: SortableRowProps) {
 
     return (
         <TableRow ref={setNodeRef} style={style} data-state={row.getIsSelected() && 'selected'}>
-            <TableCell className="w-[50px]">
+            <TableCell className="w-12.5">
                 <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
                     <GripVertical className="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -121,7 +121,7 @@ export function SortableDataTable<TData extends { id: number }, TValue>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                <TableHead className="w-[50px]"></TableHead>
+                                <TableHead className="w-12.5"></TableHead>
                                 {headerGroup.headers.map((header) => (
                                     <TableHead key={header.id}>
                                         {header.isPlaceholder

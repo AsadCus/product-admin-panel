@@ -1,12 +1,11 @@
-import type {
-    DragEndEvent} from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
 import {
     DndContext,
     closestCenter,
     KeyboardSensor,
     PointerSensor,
     useSensor,
-    useSensors
+    useSensors,
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -36,6 +35,7 @@ import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
 import type { BreadcrumbItem } from '@/types';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 
 interface Supplier {
     id: number;
@@ -100,7 +100,15 @@ function SortableGalleryItem({
             style={style}
             className="group relative overflow-hidden rounded-lg border"
         >
-            <div className="aspect-square cursor-pointer" onClick={() => onImageClick(gallery.file_url || '', `${productName} - #${gallery.order}`)}>
+            <div
+                className="aspect-square cursor-pointer"
+                onClick={() =>
+                    onImageClick(
+                        gallery.file_url || '',
+                        `${productName} - #${gallery.order}`,
+                    )
+                }
+            >
                 {gallery.file_url ? (
                     <img
                         src={gallery.file_url}
@@ -126,7 +134,7 @@ function SortableGalleryItem({
                 <Button
                     variant="secondary"
                     size="icon"
-                    className="h-8 w-8 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-8 w-8 cursor-grab opacity-0 transition-opacity group-hover:opacity-100 active:cursor-grabbing"
                     {...attributes}
                     {...listeners}
                 >
@@ -137,7 +145,7 @@ function SortableGalleryItem({
                 <Button
                     variant="destructive"
                     size="icon"
-                    className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
                     onClick={() =>
                         onDelete(
                             `/product-galleries/${gallery.id}`,
@@ -148,7 +156,7 @@ function SortableGalleryItem({
                     <Trash2 className="h-4 w-4" />
                 </Button>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
+            <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/60 to-transparent p-3">
                 <div className="flex items-center justify-between">
                     <Badge variant="secondary">#{gallery.order}</Badge>
                     <Button variant="secondary" size="sm" asChild>
@@ -172,7 +180,11 @@ export default function ProductShow({ product }: Props) {
     });
 
     const [galleries, setGalleries] = useState<Gallery[]>(product.galleries);
-    const [imagePreview, setImagePreview] = useState<{ open: boolean; src: string; title: string }>({
+    const [imagePreview, setImagePreview] = useState<{
+        open: boolean;
+        src: string;
+        title: string;
+    }>({
         open: false,
         src: '',
         title: '',
@@ -248,14 +260,14 @@ export default function ProductShow({ product }: Props) {
 
             <div className="flex h-full flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-4 min-w-0">
+                    <div className="flex min-w-0 items-center gap-4">
                         <BackButton />
                         <Heading
                             title={product.name}
                             description={t('products.details')}
                         />
                     </div>
-                    <Button asChild className="w-full sm:w-auto shrink-0">
+                    <Button asChild className="w-full shrink-0 sm:w-auto">
                         <Link href="/product-galleries/create">
                             <Pencil className="mr-2 h-4 w-4" />
                             {t('galleries.add')}
@@ -377,7 +389,9 @@ export default function ProductShow({ product }: Props) {
                                                     gallery={gallery}
                                                     productName={product.name}
                                                     onDelete={confirmDelete}
-                                                    onImageClick={handleImageClick}
+                                                    onImageClick={
+                                                        handleImageClick
+                                                    }
                                                     t={t}
                                                 />
                                             ))}
@@ -414,10 +428,12 @@ export default function ProductShow({ product }: Props) {
                     </CardContent>
                 </Card>
             </div>
-            
+
             <ImagePreviewDialog
                 open={imagePreview.open}
-                onOpenChange={(open) => setImagePreview({ ...imagePreview, open })}
+                onOpenChange={(open) =>
+                    setImagePreview({ ...imagePreview, open })
+                }
                 imageSrc={imagePreview.src}
                 imageAlt={imagePreview.title}
                 title={imagePreview.title}
