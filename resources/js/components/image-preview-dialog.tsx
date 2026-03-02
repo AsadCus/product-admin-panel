@@ -1,6 +1,6 @@
-import { ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useState, useEffect, useRef } from 'react';
+import { X, ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -28,6 +28,24 @@ export function ImagePreviewDialog({
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const imageRef = useRef<HTMLImageElement>(null);
+
+    useEffect(() => {
+        const img = imageRef.current;
+        if (!img) return;
+
+        const handleWheel = (e: WheelEvent) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                setScale((prev) => Math.min(prev + 0.25, 3));
+            } else {
+                setScale((prev) => Math.max(prev - 0.25, 0.5));
+            }
+        };
+
+        img.addEventListener('wheel', handleWheel, { passive: false });
+        return () => img.removeEventListener('wheel', handleWheel);
+    }, []);
 
     const handleZoomIn = () => {
         setScale((prev) => Math.min(prev + 0.25, 3));
@@ -75,15 +93,6 @@ export function ImagePreviewDialog({
 
     const handleMouseUp = () => {
         setIsDragging(false);
-    };
-
-    const handleWheel = (e: React.WheelEvent) => {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            handleZoomIn();
-        } else {
-            handleZoomOut();
-        }
     };
 
     return (
@@ -139,15 +148,15 @@ export function ImagePreviewDialog({
                 </div>
 
                 <div
-                    className="relative flex items-center justify-center overflow-hidden bg-muted/30"
+                    className="relative flex touch-none items-center justify-center overflow-hidden bg-muted/30"
                     style={{ height: 'calc(95vh - 140px)' }}
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
                     onMouseLeave={handleMouseUp}
-                    onWheel={handleWheel}
                 >
                     <img
+                        ref={imageRef}
                         src={imageSrc}
                         alt={imageAlt}
                         className="max-h-full max-w-full object-contain transition-transform select-none"

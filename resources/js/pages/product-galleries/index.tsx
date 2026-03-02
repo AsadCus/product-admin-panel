@@ -27,7 +27,6 @@ import {
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Heading from '@/components/heading';
-import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -43,6 +42,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';

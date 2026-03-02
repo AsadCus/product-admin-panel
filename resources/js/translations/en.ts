@@ -219,6 +219,12 @@ export const en = {
     'banners.order_failed': 'Failed to update banner order',
     'banners.deleted_success': 'Banner deleted successfully',
     'banners.deleted_failed': 'Failed to delete banner',
+    'banners.details': 'Banner details',
+    'banners.image': 'Banner Image',
+    'banners.information': 'Information',
+    'banners.title_label': 'Title',
+    'banners.status': 'Status',
+    'banners.order_label': 'Order',
 
     // Form
     'form.select_supplier': 'Select a supplier',
