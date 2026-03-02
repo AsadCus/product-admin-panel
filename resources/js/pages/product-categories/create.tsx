@@ -20,7 +20,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
-import { useTranslation } from '@/translations';
 import type { BreadcrumbItem } from '@/types';
 
 interface Supplier {
@@ -38,7 +37,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ProductCategoryCreate({ suppliers }: Props) {
-    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         supplier_id: '',

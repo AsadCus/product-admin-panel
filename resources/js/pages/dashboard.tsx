@@ -274,7 +274,7 @@ export default function Dashboard({
                                             cx="50%"
                                             cy="50%"
                                             labelLine={false}
-                                            label={(entry: any) =>
+                                            label={(entry: ChartData) =>
                                                 `${entry.name}: ${entry.count}`
                                             }
                                             outerRadius={80}

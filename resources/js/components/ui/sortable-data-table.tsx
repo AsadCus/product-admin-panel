@@ -17,7 +17,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type {
-    ColumnDef} from '@tanstack/react-table';
+    ColumnDef,
+    Row,
+} from '@tanstack/react-table';
 import {
     flexRender,
     getCoreRowModel,
@@ -34,12 +36,15 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-interface SortableRowProps {
-    row: any;
+interface SortableRowProps<TData extends { id: number }> {
+    row: Row<TData>;
     children: React.ReactNode;
 }
 
-function SortableRow({ row, children }: SortableRowProps) {
+function SortableRow<TData extends { id: number }>({
+    row,
+    children,
+}: SortableRowProps<TData>) {
     const {
         attributes,
         listeners,

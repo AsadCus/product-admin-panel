@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
+import { ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
-import { X, ZoomIn, ZoomOut, RotateCw, Download } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,

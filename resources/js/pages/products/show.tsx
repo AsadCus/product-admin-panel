@@ -35,8 +35,8 @@ import { Separator } from '@/components/ui/separator';
 import { useDeleteConfirmation } from '@/hooks/use-delete-confirmation';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
+import type { TranslationKey } from '@/translations/en';
 import type { BreadcrumbItem } from '@/types';
-import { ImagePreviewDialog } from '@/components/image-preview-dialog';
 
 interface Supplier {
     id: number;
@@ -70,7 +70,7 @@ interface SortableGalleryItemProps {
     productName: string;
     onDelete: (url: string, name: string) => void;
     onImageClick: (imageSrc: string, title: string) => void;
-    t: (key: any) => string;
+    t: (key: TranslationKey) => string;
 }
 
 function SortableGalleryItem({
@@ -241,10 +241,6 @@ export default function ProductShow({ product }: Props) {
             });
         }
     };
-
-    // Debug: log the product data
-    console.log('Product data:', product);
-    console.log('Galleries:', product.galleries);
 
     const handleImageClick = (src: string, title: string) => {
         setImagePreview({ open: true, src, title });
