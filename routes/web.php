@@ -22,6 +22,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::post('products/{product}/galleries/reorder', [ProductController::class, 'reorderGalleries'])->name('products.galleries.reorder');
     Route::resource('product-galleries', ProductGalleryController::class);
+    Route::post('product-specifications', [\App\Http\Controllers\ProductSpecificationController::class, 'store'])->name('product-specifications.store');
+    Route::put('product-specifications/{productSpecification}', [\App\Http\Controllers\ProductSpecificationController::class, 'update'])->name('product-specifications.update');
+    Route::delete('product-specifications/{productSpecification}', [\App\Http\Controllers\ProductSpecificationController::class, 'destroy'])->name('product-specifications.destroy');
+    Route::post('product-specifications/reorder', [\App\Http\Controllers\ProductSpecificationController::class, 'reorder'])->name('product-specifications.reorder');
     Route::post('banners/reorder', [\App\Http\Controllers\BannerController::class, 'reorderBanners'])->name('banners.reorder');
     Route::resource('banners', \App\Http\Controllers\BannerController::class);
 });

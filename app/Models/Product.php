@@ -31,6 +31,11 @@ class Product extends Model
 
     public function galleries(): HasMany
     {
-        return $this->hasMany(ProductGallery::class)->orderBy('order');
+        return $this->hasMany(ProductGallery::class);
+    }
+
+    public function specifications(): HasMany
+    {
+        return $this->hasMany(ProductSpecification::class);
     }
 }

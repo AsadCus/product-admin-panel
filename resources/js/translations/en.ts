@@ -197,6 +197,25 @@ export const en = {
     'galleries.search_placeholder': 'Search galleries...',
     'galleries.image': 'Image',
 
+    // Specifications
+    'specifications.title': 'Specifications',
+    'specifications.add': 'Add Specification',
+    'specifications.edit': 'Edit Specification',
+    'specifications.label': 'Label',
+    'specifications.value': 'Value',
+    'specifications.image': 'Image',
+    'specifications.order': 'Order',
+    'specifications.no_specifications': 'No specifications yet',
+    'specifications.add_first': 'Add your first specification',
+    'specifications.delete_confirm': 'Delete this specification?',
+    'specifications.delete_warning': 'This action cannot be undone.',
+    'specifications.deleted_success': 'Specification deleted successfully',
+    'specifications.deleted_error': 'Failed to delete specification',
+    'specifications.created_success': 'Specification added successfully',
+    'specifications.updated_success': 'Specification updated successfully',
+    'specifications.product_specs': 'Product Specifications',
+    'specifications.technical_details': 'Technical details of the product',
+
     // Banners
     'banners.title': 'Banners',
     'banners.manage': 'Manage promotional banners - drag to reorder within supplier',
