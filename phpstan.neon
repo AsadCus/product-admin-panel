@@ -1,0 +1,15 @@
+parameters:
+    level: 5
+    paths:
+        - app
+        - bootstrap
+        - config
+        - routes
+    excludePaths:
+        - routes/console.php
+    ignoreErrors:
+        - '#Access to an undefined property [a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+#'
+        - '#Call to an undefined static method App\\Models\\[a-zA-Z]+::(create|where|whereIn|count|withCount|max|orderBy)\(\)#'
+        - '#Call to static method disk\(\) on an unknown class Storage#'
+        - '#has invalid type App\\Http\\Requests\\[a-zA-Z]+Request#'
+        - '#Call to method validated\(\) on an unknown class#'

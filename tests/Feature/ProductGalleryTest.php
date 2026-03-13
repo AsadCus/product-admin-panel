@@ -32,7 +32,7 @@ class ProductGalleryTest extends TestCase
     public function test_authenticated_users_can_create_product_gallery(): void
     {
         Storage::fake('public');
-        
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -52,8 +52,8 @@ class ProductGalleryTest extends TestCase
             'product_id' => $product->id,
             'order' => 1,
         ]);
-        
-        Storage::disk('public')->assertExists('product-galleries/' . $file->hashName());
+
+        Storage::disk('public')->assertExists('product-galleries/'.$file->hashName());
     }
 
     public function test_product_gallery_file_path_is_required(): void
@@ -74,7 +74,7 @@ class ProductGalleryTest extends TestCase
     public function test_product_gallery_product_id_is_required(): void
     {
         Storage::fake('public');
-        
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -91,7 +91,7 @@ class ProductGalleryTest extends TestCase
     public function test_authenticated_users_can_update_product_gallery(): void
     {
         Storage::fake('public');
-        
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -111,8 +111,8 @@ class ProductGalleryTest extends TestCase
             'product_id' => $gallery->product_id,
             'order' => 5,
         ]);
-        
-        Storage::disk('public')->assertExists('product-galleries/' . $file->hashName());
+
+        Storage::disk('public')->assertExists('product-galleries/'.$file->hashName());
     }
 
     public function test_authenticated_users_can_delete_product_gallery(): void

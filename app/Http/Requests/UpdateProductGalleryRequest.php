@@ -22,7 +22,8 @@ class UpdateProductGalleryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $galleryId = $this->route('product_gallery')?->id;
+        $gallery = $this->route('product_gallery');
+        $galleryId = is_object($gallery) ? $gallery->id : $gallery;
 
         return [
             'file' => ['nullable', 'file', 'image', 'max:2048'], // optional for update

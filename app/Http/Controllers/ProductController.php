@@ -57,7 +57,7 @@ class ProductController extends Controller
      */
     public function show(Product $product): Response
     {
-        $product->load(['supplier', 'galleries']);
+        $product->load(['supplier', 'galleries', 'specifications']);
 
         return Inertia::render('products/show', [
             'product' => [
@@ -77,6 +77,16 @@ class ProductController extends Controller
                         'order' => $gallery->order,
                     ];
                 }),
+                'specifications' => $product->specifications->map(function ($spec) {
+                    return [
+                        'id' => $spec->id,
+                        'label' => $spec->label,
+                        'value' => $spec->value,
+                        'image_path' => $spec->image_path,
+                        'image_url' => $spec->image_path ? asset('storage/'.$spec->image_path) : null,
+                        'order' => $spec->order,
+                    ];
+                }),
                 'created_at' => $product->created_at->toISOString(),
                 'updated_at' => $product->updated_at->toISOString(),
             ],
@@ -88,12 +98,29 @@ class ProductController extends Controller
      */
     public function edit(Product $product): Response
     {
+        $product->load('specifications');
+
         $suppliers = Supplier::query()
             ->orderBy('name')
             ->get(['id', 'name']);
 
         return Inertia::render('products/edit', [
-            'product' => $product,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'description' => $product->description,
+                'supplier_id' => $product->supplier_id,
+                'specifications' => $product->specifications->map(function ($spec) {
+                    return [
+                        'id' => $spec->id,
+                        'label' => $spec->label,
+                        'value' => $spec->value,
+                        'image_path' => $spec->image_path,
+                        'image_url' => $spec->image_path ? asset('storage/'.$spec->image_path) : null,
+                        'order' => $spec->order,
+                    ];
+                }),
+            ],
             'suppliers' => $suppliers,
         ]);
     }
@@ -133,6 +160,7 @@ class ProductController extends Controller
 
         foreach ($galleries as $gallery) {
             \App\Models\ProductGallery::where('id', $gallery['id'])
+                ->where('product_id', $product->id)
                 ->update(['order' => $gallery['order']]);
         }
 

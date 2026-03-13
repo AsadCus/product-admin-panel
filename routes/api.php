@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductGalleryController;
+use App\Http\Controllers\Api\ProductSpecificationController;
 use App\Http\Controllers\Api\PublicProductController;
 use App\Http\Controllers\Api\SupplierController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 // Public API - no auth required
 Route::get('products', [PublicProductController::class, 'index'])->name('public.products.index');
 Route::get('products/{product}', [PublicProductController::class, 'show'])->name('public.products.show');
+Route::get('products/{product}/specifications', [ProductSpecificationController::class, 'index'])->name('public.products.specifications.index');
+Route::get('product-specifications/{productSpecification}', [ProductSpecificationController::class, 'show'])->name('public.product-specifications.show');
 
 // Public Banner API
 Route::get('banners', [BannerController::class, 'index'])->name('public.banners.index');

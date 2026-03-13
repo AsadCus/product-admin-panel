@@ -197,6 +197,25 @@ export const id = {
     'galleries.search_placeholder': 'Cari galeri...',
     'galleries.image': 'Gambar',
 
+    // Specifications
+    'specifications.title': 'Spesifikasi',
+    'specifications.add': 'Tambah Spesifikasi',
+    'specifications.edit': 'Edit Spesifikasi',
+    'specifications.label': 'Label',
+    'specifications.value': 'Nilai',
+    'specifications.image': 'Gambar',
+    'specifications.order': 'Urutan',
+    'specifications.no_specifications': 'Belum ada spesifikasi',
+    'specifications.add_first': 'Tambahkan spesifikasi pertama',
+    'specifications.delete_confirm': 'Hapus spesifikasi ini?',
+    'specifications.delete_warning': 'Tindakan ini tidak dapat dibatalkan.',
+    'specifications.deleted_success': 'Spesifikasi berhasil dihapus',
+    'specifications.deleted_error': 'Gagal menghapus spesifikasi',
+    'specifications.created_success': 'Spesifikasi berhasil ditambahkan',
+    'specifications.updated_success': 'Spesifikasi berhasil diperbarui',
+    'specifications.product_specs': 'Spesifikasi Produk',
+    'specifications.technical_details': 'Detail teknis produk',
+
     // Banners
     'banners.title': 'Banner',
     'banners.manage': 'Kelola banner promosi - drag untuk mengubah urutan dalam supplier',

@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import BackButton from '@/components/back-button';
 import Heading from '@/components/heading';
 import { ImagePreviewDialog } from '@/components/image-preview-dialog';
+import ProductSpecifications from '@/components/product-specifications';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -51,12 +52,22 @@ interface Gallery {
     order: number;
 }
 
+interface Specification {
+    id: number;
+    label: string;
+    value: string;
+    image_path: string | null;
+    image_url: string | null;
+    order: number;
+}
+
 interface Product {
     id: number;
     name: string;
     description: string | null;
     supplier: Supplier;
     galleries: Gallery[];
+    specifications: Specification[];
     created_at: string;
     updated_at: string;
 }
@@ -400,6 +411,11 @@ export default function ProductShow({ product }: Props) {
                         </CardContent>
                     </Card>
                 </div>
+
+                <ProductSpecifications
+                    productId={product.id}
+                    specifications={product.specifications}
+                />
 
                 <Card>
                     <CardHeader>

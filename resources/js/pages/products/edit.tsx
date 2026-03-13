@@ -2,6 +2,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import BackButton from '@/components/back-button';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import ProductSpecifications from '@/components/product-specifications';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -29,11 +30,21 @@ interface Supplier {
     name: string;
 }
 
+interface Specification {
+    id: number;
+    label: string;
+    value: string;
+    image_path: string | null;
+    image_url: string | null;
+    order: number;
+}
+
 interface Product {
     id: number;
     name: string;
     description: string | null;
     supplier_id: number;
+    specifications: Specification[];
 }
 
 interface Props {
@@ -150,6 +161,11 @@ export default function ProductEdit({ product, suppliers }: Props) {
                         </CardContent>
                     </Card>
                 </div>
+
+                <ProductSpecifications
+                    productId={product.id}
+                    specifications={product.specifications}
+                />
             </div>
         </AppLayout>
     );
