@@ -55,9 +55,9 @@ interface Gallery {
     product: {
         id: number;
         name: string;
-        supplier: { id: number; name: string };
-        category: { id: number; name: string };
-    };
+        supplier: { id: number; name: string } | null;
+        category: { id: number; name: string } | null;
+    } | null;
 }
 
 interface Props {
@@ -66,8 +66,17 @@ interface Props {
     };
 }
 
+type ResolvedGallery = Gallery & {
+    product: {
+        id: number;
+        name: string;
+        supplier: { id: number; name: string };
+        category: { id: number; name: string };
+    };
+};
+
 interface SortableGalleryItemProps {
-    gallery: Gallery;
+    gallery: ResolvedGallery;
     onDelete: (id: number, productName: string) => void;
     onImageClick: (imageSrc: string, title: string) => void;
 }
@@ -176,8 +185,17 @@ function SortableGalleryItem({
 export default function ProductGalleriesIndex({ galleries }: Props) {
     const { t } = useTranslation();
 
+    const validGalleries = galleries.data.filter(
+        (gallery): gallery is ResolvedGallery =>
+            Boolean(
+                gallery.product?.id &&
+                gallery.product.supplier?.id &&
+                gallery.product.category?.id,
+            ),
+    );
+
     // Group galleries by supplier > category > product
-    const groupedGalleries = galleries.data.reduce(
+    const groupedGalleries = validGalleries.reduce(
         (acc, gallery) => {
             const supplierId = gallery.product.supplier.id;
             const categoryId = gallery.product.category.id;
@@ -221,7 +239,7 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
                             number,
                             {
                                 product: { id: number; name: string };
-                                galleries: Gallery[];
+                                galleries: ResolvedGallery[];
                             }
                         >;
                     }
@@ -261,7 +279,7 @@ export default function ProductGalleriesIndex({ galleries }: Props) {
         if (over && active.id !== over.id) {
             setSupplierData((prev) => {
                 // Find the product's galleries
-                let targetGalleries: Gallery[] = [];
+                let targetGalleries: ResolvedGallery[] = [];
                 let supplierId = 0;
                 let categoryId = 0;
 

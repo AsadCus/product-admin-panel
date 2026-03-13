@@ -14,7 +14,12 @@ class BannerController extends Controller
 {
     public function index(): Response
     {
-        $banners = Banner::with('supplier')->orderBy('supplier_id')->orderBy('order')->get();
+        $banners = Banner::query()
+            ->with('supplier')
+            ->whereHas('supplier')
+            ->orderBy('supplier_id')
+            ->orderBy('order')
+            ->get();
 
         return Inertia::render('banners/index', ['banners' => ['data' => $banners]]);
     }

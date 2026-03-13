@@ -1,9 +1,29 @@
 import type { DragEndEvent } from '@dnd-kit/core';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus, GripVertical, MoreHorizontal, Eye, Pencil, Trash2 } from 'lucide-react';
+import {
+    Plus,
+    GripVertical,
+    MoreHorizontal,
+    Eye,
+    Pencil,
+    Trash2,
+} from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Heading from '@/components/heading';
@@ -20,8 +40,19 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import { useTranslation } from '@/translations';
 
@@ -30,7 +61,7 @@ interface Banner {
     title: string;
     description: string | null;
     image_path: string;
-    supplier: { id: number; name: string };
+    supplier: { id: number; name: string } | null;
     is_active: boolean;
     order: number;
 }
@@ -39,15 +70,31 @@ interface Props {
     banners: { data: Banner[] };
 }
 
+type ResolvedBanner = Banner & {
+    supplier: { id: number; name: string };
+};
+
 interface SortableBannerItemProps {
-    banner: Banner;
+    banner: ResolvedBanner;
     onDelete: (id: number, title: string) => void;
     onImageClick: (imageSrc: string, title: string) => void;
     t: ReturnType<typeof useTranslation>['t'];
 }
 
-function SortableBannerItem({ banner, onDelete, onImageClick, t }: SortableBannerItemProps) {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: banner.id });
+function SortableBannerItem({
+    banner,
+    onDelete,
+    onImageClick,
+    t,
+}: SortableBannerItemProps) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: banner.id });
 
     const style = {
         transform: CSS.Transform.toString(transform),
@@ -56,47 +103,83 @@ function SortableBannerItem({ banner, onDelete, onImageClick, t }: SortableBanne
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="group relative rounded-lg border bg-card p-4 hover:bg-accent/50">
+        <div
+            ref={setNodeRef}
+            style={style}
+            className="group relative rounded-lg border bg-card p-4 hover:bg-accent/50"
+        >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing self-start sm:self-center">
+                <button
+                    {...attributes}
+                    {...listeners}
+                    className="cursor-grab self-start active:cursor-grabbing sm:self-center"
+                >
                     <GripVertical className="h-5 w-5 text-muted-foreground" />
                 </button>
-                
-                <img 
-                    src={`/storage/${banner.image_path}`} 
-                    alt={banner.title} 
-                    className="h-32 w-full sm:h-20 sm:w-32 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity" 
-                    onClick={() => onImageClick(`/storage/${banner.image_path}`, banner.title)}
+
+                <img
+                    src={`/storage/${banner.image_path}`}
+                    alt={banner.title}
+                    className="h-32 w-full cursor-pointer rounded object-cover transition-opacity hover:opacity-80 sm:h-20 sm:w-32"
+                    onClick={() =>
+                        onImageClick(
+                            `/storage/${banner.image_path}`,
+                            banner.title,
+                        )
+                    }
                 />
-                
-                <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <h3 className="font-semibold truncate">{banner.title}</h3>
-                        <Badge variant={banner.is_active ? 'default' : 'secondary'}>
-                            {banner.is_active ? t('banners.active') : t('banners.inactive')}
+
+                <div className="min-w-0 flex-1">
+                    <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <h3 className="truncate font-semibold">
+                            {banner.title}
+                        </h3>
+                        <Badge
+                            variant={banner.is_active ? 'default' : 'secondary'}
+                        >
+                            {banner.is_active
+                                ? t('banners.active')
+                                : t('banners.inactive')}
                         </Badge>
                         <Badge variant="outline">#{banner.order}</Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{banner.description || t('banners.no_description')}</p>
+                    <p className="mb-2 line-clamp-2 text-sm text-muted-foreground">
+                        {banner.description || t('banners.no_description')}
+                    </p>
                     <Badge variant="secondary">{banner.supplier.name}</Badge>
                 </div>
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0"
+                        >
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}`)}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                router.visit(`/banners/${banner.id}`)
+                            }
+                        >
                             <Eye className="mr-2 h-4 w-4" />
                             {t('banners.view')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => router.visit(`/banners/${banner.id}/edit`)}>
+                        <DropdownMenuItem
+                            onClick={() =>
+                                router.visit(`/banners/${banner.id}/edit`)
+                            }
+                        >
                             <Pencil className="mr-2 h-4 w-4" />
                             {t('banners.edit')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onDelete(banner.id, banner.title)} className="text-destructive">
+                        <DropdownMenuItem
+                            onClick={() => onDelete(banner.id, banner.title)}
+                            className="text-destructive"
+                        >
                             <Trash2 className="mr-2 h-4 w-4" />
                             {t('banners.delete')}
                         </DropdownMenuItem>
@@ -109,27 +192,48 @@ function SortableBannerItem({ banner, onDelete, onImageClick, t }: SortableBanne
 
 export default function BannersIndex({ banners }: Props) {
     const { t } = useTranslation();
-    
+
+    const validBanners = banners.data.filter(
+        (banner): banner is ResolvedBanner => Boolean(banner.supplier?.id),
+    );
+
     // Group banners by supplier
-    const bannersBySupplier = banners.data.reduce((acc, banner) => {
-        const supplierId = banner.supplier.id;
-        if (!acc[supplierId]) {
-            acc[supplierId] = {
-                supplier: banner.supplier,
-                banners: [],
-            };
-        }
-        acc[supplierId].banners.push(banner);
-        return acc;
-    }, {} as Record<number, { supplier: { id: number; name: string }; banners: Banner[] }>);
+    const bannersBySupplier = validBanners.reduce(
+        (acc, banner) => {
+            const supplierId = banner.supplier.id;
+            if (!acc[supplierId]) {
+                acc[supplierId] = {
+                    supplier: banner.supplier,
+                    banners: [],
+                };
+            }
+            acc[supplierId].banners.push(banner);
+            return acc;
+        },
+        {} as Record<
+            number,
+            {
+                supplier: { id: number; name: string };
+                banners: ResolvedBanner[];
+            }
+        >,
+    );
 
     const [supplierBanners, setSupplierBanners] = useState(bannersBySupplier);
-    const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; id: number | null; title: string }>({
+    const [deleteDialog, setDeleteDialog] = useState<{
+        open: boolean;
+        id: number | null;
+        title: string;
+    }>({
         open: false,
         id: null,
         title: '',
     });
-    const [imagePreview, setImagePreview] = useState<{ open: boolean; src: string; title: string }>({
+    const [imagePreview, setImagePreview] = useState<{
+        open: boolean;
+        src: string;
+        title: string;
+    }>({
         open: false,
         src: '',
         title: '',
@@ -139,7 +243,7 @@ export default function BannersIndex({ banners }: Props) {
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
-        })
+        }),
     );
 
     const handleDragEnd = (supplierId: number) => (event: DragEndEvent) => {
@@ -149,8 +253,10 @@ export default function BannersIndex({ banners }: Props) {
             setSupplierBanners((prev) => {
                 const supplierData = prev[supplierId];
                 const items = supplierData.banners;
-                
-                const oldIndex = items.findIndex((item) => item.id === active.id);
+
+                const oldIndex = items.findIndex(
+                    (item) => item.id === active.id,
+                );
                 const newIndex = items.findIndex((item) => item.id === over.id);
                 const newItems = arrayMove(items, oldIndex, newIndex);
 
@@ -171,7 +277,7 @@ export default function BannersIndex({ banners }: Props) {
                             toast.error(t('banners.order_failed'));
                             setSupplierBanners(prev);
                         },
-                    }
+                    },
                 );
 
                 return {
@@ -202,13 +308,18 @@ export default function BannersIndex({ banners }: Props) {
                 // Update local state to remove the deleted banner
                 setSupplierBanners((prev) => {
                     const newState = { ...prev };
-                    
+
                     // Find and remove the banner from the appropriate supplier
                     Object.keys(newState).forEach((supplierId) => {
                         const supplierData = newState[Number(supplierId)];
-                        const filteredBanners = supplierData.banners.filter((b) => b.id !== deleteDialog.id);
-                        
-                        if (filteredBanners.length !== supplierData.banners.length) {
+                        const filteredBanners = supplierData.banners.filter(
+                            (b) => b.id !== deleteDialog.id,
+                        );
+
+                        if (
+                            filteredBanners.length !==
+                            supplierData.banners.length
+                        ) {
                             // Banner was found and removed
                             if (filteredBanners.length === 0) {
                                 // Remove supplier group if no banners left
@@ -221,7 +332,7 @@ export default function BannersIndex({ banners }: Props) {
                             }
                         }
                     });
-                    
+
                     return newState;
                 });
                 toast.success(t('banners.deleted_success'));
@@ -235,11 +346,16 @@ export default function BannersIndex({ banners }: Props) {
     };
 
     return (
-        <AppLayout breadcrumbs={[{ title: t('banners.title'), href: '/banners' }]}>
+        <AppLayout
+            breadcrumbs={[{ title: t('banners.title'), href: '/banners' }]}
+        >
             <Head title={t('banners.title')} />
             <div className="flex h-full flex-1 flex-col gap-4 p-4 sm:gap-6 sm:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <Heading title={t('banners.title')} description={t('banners.manage')} />
+                    <Heading
+                        title={t('banners.title')}
+                        description={t('banners.manage')}
+                    />
                     <Button asChild className="w-full sm:w-auto">
                         <Link href="/banners/create">
                             <Plus className="mr-2 h-4 w-4" />
@@ -251,54 +367,95 @@ export default function BannersIndex({ banners }: Props) {
                 {Object.keys(supplierBanners).length === 0 && (
                     <Card>
                         <CardContent className="py-8">
-                            <p className="text-center text-muted-foreground">{t('banners.no_banners')}</p>
+                            <p className="text-center text-muted-foreground">
+                                {t('banners.no_banners')}
+                            </p>
                         </CardContent>
                     </Card>
                 )}
 
-                {Object.entries(supplierBanners).map(([supplierId, { supplier, banners: items }]) => (
-                    <Card key={supplierId}>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                {supplier.name}
-                                <Badge variant="secondary">{items.length} {t('banners.count')}{items.length !== 1 ? 's' : ''}</Badge>
-                            </CardTitle>
-                            <CardDescription>{t('banners.drag_to_reorder')}</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd(Number(supplierId))}>
-                                <SortableContext items={items.map((b) => b.id)} strategy={verticalListSortingStrategy}>
-                                    <div className="space-y-2">
-                                        {items.map((banner) => (
-                                            <SortableBannerItem 
-                                                key={banner.id} 
-                                                banner={banner} 
-                                                onDelete={handleDelete} 
-                                                onImageClick={handleImageClick}
-                                                t={t} 
-                                            />
-                                        ))}
-                                    </div>
-                                </SortableContext>
-                            </DndContext>
-                        </CardContent>
-                    </Card>
-                ))}
+                {Object.entries(supplierBanners).map(
+                    ([supplierId, { supplier, banners: items }]) => (
+                        <Card key={supplierId}>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    {supplier.name}
+                                    <Badge variant="secondary">
+                                        {items.length} {t('banners.count')}
+                                        {items.length !== 1 ? 's' : ''}
+                                    </Badge>
+                                </CardTitle>
+                                <CardDescription>
+                                    {t('banners.drag_to_reorder')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <DndContext
+                                    sensors={sensors}
+                                    collisionDetection={closestCenter}
+                                    onDragEnd={handleDragEnd(
+                                        Number(supplierId),
+                                    )}
+                                >
+                                    <SortableContext
+                                        items={items.map((b) => b.id)}
+                                        strategy={verticalListSortingStrategy}
+                                    >
+                                        <div className="space-y-2">
+                                            {items.map((banner) => (
+                                                <SortableBannerItem
+                                                    key={banner.id}
+                                                    banner={banner}
+                                                    onDelete={handleDelete}
+                                                    onImageClick={
+                                                        handleImageClick
+                                                    }
+                                                    t={t}
+                                                />
+                                            ))}
+                                        </div>
+                                    </SortableContext>
+                                </DndContext>
+                            </CardContent>
+                        </Card>
+                    ),
+                )}
             </div>
 
-            <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+            <AlertDialog
+                open={deleteDialog.open}
+                onOpenChange={(open) =>
+                    setDeleteDialog({ ...deleteDialog, open })
+                }
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>{t('banners.delete_title')}</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            {t('banners.delete_title')}
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
-                            {t('banners.delete_description').replace('{title}', deleteDialog.title)}
+                            {t('banners.delete_description').replace(
+                                '{title}',
+                                deleteDialog.title,
+                            )}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel onClick={() => setDeleteDialog({ open: false, id: null, title: '' })}>
+                        <AlertDialogCancel
+                            onClick={() =>
+                                setDeleteDialog({
+                                    open: false,
+                                    id: null,
+                                    title: '',
+                                })
+                            }
+                        >
                             {t('banners.delete_cancel')}
                         </AlertDialogCancel>
-                        <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90 !text-white">
+                        <AlertDialogAction
+                            onClick={confirmDelete}
+                            className="bg-destructive text-white! hover:bg-destructive/90"
+                        >
                             {t('banners.delete_confirm')}
                         </AlertDialogAction>
                     </AlertDialogFooter>
@@ -307,7 +464,9 @@ export default function BannersIndex({ banners }: Props) {
 
             <ImagePreviewDialog
                 open={imagePreview.open}
-                onOpenChange={(open) => setImagePreview({ ...imagePreview, open })}
+                onOpenChange={(open) =>
+                    setImagePreview({ ...imagePreview, open })
+                }
                 imageSrc={imagePreview.src}
                 imageAlt={imagePreview.title}
                 title={imagePreview.title}

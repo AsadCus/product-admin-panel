@@ -19,6 +19,8 @@ class ProductGalleryController extends Controller
     {
         $galleries = ProductGallery::query()
             ->with(['product.supplier', 'product.category'])
+            ->whereHas('product.supplier')
+            ->whereHas('product.category')
             ->orderBy('order')
             ->get();
 

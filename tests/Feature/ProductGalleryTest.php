@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\ProductGallery;
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class ProductGalleryTest extends TestCase
@@ -27,6 +30,48 @@ class ProductGalleryTest extends TestCase
 
         $response = $this->get(route('product-galleries.index'));
         $response->assertOk();
+    }
+
+    public function test_index_only_returns_galleries_with_supplier_and_category_relations(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $supplier = Supplier::factory()->create();
+        $category = ProductCategory::query()->create([
+            'name' => 'Test Category',
+            'description' => 'Test category description',
+            'supplier_id' => $supplier->id,
+            'order' => 1,
+        ]);
+
+        $validProduct = Product::factory()->create([
+            'supplier_id' => $supplier->id,
+            'category_id' => $category->id,
+        ]);
+
+        $invalidProduct = Product::factory()->create([
+            'supplier_id' => $supplier->id,
+            'category_id' => null,
+        ]);
+
+        $validGallery = ProductGallery::factory()->create([
+            'product_id' => $validProduct->id,
+            'order' => 1,
+        ]);
+
+        ProductGallery::factory()->create([
+            'product_id' => $invalidProduct->id,
+            'order' => 2,
+        ]);
+
+        $this->get(route('product-galleries.index'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('product-galleries/index')
+                ->has('galleries.data', 1)
+                ->where('galleries.data.0.id', $validGallery->id)
+            );
     }
 
     public function test_authenticated_users_can_create_product_gallery(): void

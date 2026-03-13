@@ -24,42 +24,42 @@ class ProductSpecificationSeeder extends Seeder
             [
                 'label' => 'Berat',
                 'values' => ['500 gram', '1 kg', '1.5 kg', '2 kg', '2.5 kg', '3 kg'],
-                'image' => 'weight.png',
+                'image' => 'weight.svg',
             ],
             [
                 'label' => 'Dimensi',
                 'values' => ['20x15x10 cm', '30x20x15 cm', '40x30x20 cm', '50x40x30 cm'],
-                'image' => 'dimensions.png',
+                'image' => 'dimensions.svg',
             ],
             [
                 'label' => 'Material',
                 'values' => ['Stainless Steel', 'Plastic', 'Wood', 'Aluminum', 'Glass', 'Ceramic'],
-                'image' => 'material.png',
+                'image' => 'material.svg',
             ],
             [
                 'label' => 'Warna',
                 'values' => ['Hitam', 'Putih', 'Silver', 'Biru', 'Merah', 'Hijau', 'Kuning'],
-                'image' => 'color.png',
+                'image' => 'color.svg',
             ],
             [
                 'label' => 'Daya',
                 'values' => ['100 Watt', '150 Watt', '200 Watt', '300 Watt', '500 Watt'],
-                'image' => 'power.png',
+                'image' => 'power.svg',
             ],
             [
                 'label' => 'Garansi',
                 'values' => ['6 Bulan', '1 Tahun', '2 Tahun', '3 Tahun', '5 Tahun'],
-                'image' => 'warranty.png',
+                'image' => 'warranty.svg',
             ],
             [
                 'label' => 'Kapasitas',
                 'values' => ['500 ml', '1 Liter', '2 Liter', '5 Liter', '10 Liter'],
-                'image' => 'capacity.png',
+                'image' => 'capacity.svg',
             ],
             [
                 'label' => 'Voltase',
                 'values' => ['110V', '220V', '240V', '12V DC', '24V DC'],
-                'image' => 'voltage.png',
+                'image' => 'voltage.svg',
             ],
         ];
 
@@ -96,14 +96,14 @@ class ProductSpecificationSeeder extends Seeder
     private function createSampleImages(): void
     {
         $images = [
-            'weight.png' => $this->createPlaceholderSVG('⚖️', '#3b82f6'),
-            'dimensions.png' => $this->createPlaceholderSVG('📏', '#8b5cf6'),
-            'material.png' => $this->createPlaceholderSVG('🔨', '#10b981'),
-            'color.png' => $this->createPlaceholderSVG('🎨', '#f59e0b'),
-            'power.png' => $this->createPlaceholderSVG('⚡', '#eab308'),
-            'warranty.png' => $this->createPlaceholderSVG('🛡️', '#06b6d4'),
-            'capacity.png' => $this->createPlaceholderSVG('📦', '#ec4899'),
-            'voltage.png' => $this->createPlaceholderSVG('🔌', '#ef4444'),
+            'weight.svg' => $this->createPlaceholderSVG('⚖️', '#3b82f6'),
+            'dimensions.svg' => $this->createPlaceholderSVG('📏', '#8b5cf6'),
+            'material.svg' => $this->createPlaceholderSVG('🔨', '#10b981'),
+            'color.svg' => $this->createPlaceholderSVG('🎨', '#f59e0b'),
+            'power.svg' => $this->createPlaceholderSVG('⚡', '#eab308'),
+            'warranty.svg' => $this->createPlaceholderSVG('🛡️', '#06b6d4'),
+            'capacity.svg' => $this->createPlaceholderSVG('📦', '#ec4899'),
+            'voltage.svg' => $this->createPlaceholderSVG('🔌', '#ef4444'),
         ];
 
         foreach ($images as $filename => $svg) {

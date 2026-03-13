@@ -14,11 +14,11 @@ class SupplierSeeder extends Seeder
     {
         $suppliers = [
             [
-                'name' => 'AudioInfinite',
+                'name' => 'Audioinfinite',
                 'desc' => 'Premium audio equipment and accessories supplier',
             ],
             [
-                'name' => 'TendZone',
+                'name' => 'Tendzone',
                 'desc' => 'Professional electronics and gadgets distributor',
             ],
         ];

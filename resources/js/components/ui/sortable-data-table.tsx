@@ -23,7 +23,6 @@ import type {
 import {
     flexRender,
     getCoreRowModel,
-    useReactTable,
 } from '@tanstack/react-table';
 import { GripVertical } from 'lucide-react';
 import * as React from 'react';
@@ -35,6 +34,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { useSafeReactTable } from '@/hooks/use-safe-react-table';
 
 interface SortableRowProps<TData extends { id: number }> {
     row: Row<TData>;
@@ -96,7 +96,7 @@ export function SortableDataTable<TData extends { id: number }, TValue>({
         })
     );
 
-    const table = useReactTable({
+    const table = useSafeReactTable({
         data: items,
         columns,
         getCoreRowModel: getCoreRowModel(),

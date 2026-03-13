@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use App\Models\ProductGallery;
+use App\Models\ProductCategory;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -13,9 +13,21 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory()
-            ->count(20)
-            ->has(ProductGallery::factory()->count(3), 'galleries')
-            ->create();
+        $categories = ProductCategory::query()->get(['id', 'supplier_id']);
+
+        if ($categories->isEmpty()) {
+            $this->command?->warn('No product categories found. Please run ProductCategorySeeder first.');
+
+            return;
+        }
+
+        for ($index = 0; $index < 20; $index++) {
+            $category = $categories->random();
+
+            Product::factory()->create([
+                'supplier_id' => $category->supplier_id,
+                'category_id' => $category->id,
+            ]);
+        }
     }
 }

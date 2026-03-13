@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
         // Seed sample data with categories
         $this->call([
             ProductCategorySeeder::class,
+            ProductSeeder::class,
+            ProductGallerySeeder::class,
+            BannerSeeder::class,
             ProductSpecificationSeeder::class,
         ]);
     }

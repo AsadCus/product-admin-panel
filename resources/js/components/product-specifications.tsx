@@ -16,7 +16,14 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { router } from '@inertiajs/react';
-import { Plus, Pencil, Trash2, GripVertical, Package, Image as ImageIcon } from 'lucide-react';
+import {
+    Plus,
+    Pencil,
+    Trash2,
+    GripVertical,
+    Package,
+    Image as ImageIcon,
+} from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import {
@@ -89,19 +96,19 @@ function SortableSpecItem({ spec, onEdit, onDelete }: SortableSpecItemProps) {
         <div
             ref={setNodeRef}
             style={style}
-            className="group relative flex items-center gap-3 rounded-lg border bg-card p-4 hover:bg-accent/50 transition-colors"
+            className="group relative flex items-center gap-3 rounded-lg border bg-card p-4 transition-colors hover:bg-accent/50"
         >
             <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                className="h-6 w-6 shrink-0 cursor-grab opacity-0 transition-opacity group-hover:opacity-100 active:cursor-grabbing"
                 {...attributes}
                 {...listeners}
             >
                 <GripVertical className="h-4 w-4" />
             </Button>
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-muted overflow-hidden">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted">
                     {spec.image_url ? (
                         <img
                             src={spec.image_url}
@@ -112,14 +119,16 @@ function SortableSpecItem({ spec, onEdit, onDelete }: SortableSpecItemProps) {
                         <ImageIcon className="h-8 w-8 text-muted-foreground" />
                     )}
                 </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-muted-foreground truncate">
+                <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-muted-foreground">
                         {spec.label}
                     </p>
-                    <p className="text-base font-semibold truncate">{spec.value}</p>
+                    <p className="truncate text-base font-semibold">
+                        {spec.value}
+                    </p>
                 </div>
             </div>
-            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+            <div className="flex shrink-0 gap-1 opacity-0 transition-opacity group-hover:opacity-100">
                 <Button
                     variant="ghost"
                     size="icon"
@@ -146,11 +155,14 @@ export default function ProductSpecifications({
     specifications: initialSpecs,
 }: ProductSpecificationsProps) {
     const { t } = useTranslation();
-    const [specifications, setSpecifications] = useState<Specification[]>(initialSpecs);
+    const [specifications, setSpecifications] =
+        useState<Specification[]>(initialSpecs);
     const [dialogOpen, setDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [editingSpec, setEditingSpec] = useState<Specification | null>(null);
-    const [deletingSpec, setDeletingSpec] = useState<Specification | null>(null);
+    const [deletingSpec, setDeletingSpec] = useState<Specification | null>(
+        null,
+    );
     const [formData, setFormData] = useState({
         label: '',
         value: '',
@@ -170,7 +182,9 @@ export default function ProductSpecifications({
 
         if (over && active.id !== over.id) {
             setSpecifications((items) => {
-                const oldIndex = items.findIndex((item) => item.id === active.id);
+                const oldIndex = items.findIndex(
+                    (item) => item.id === active.id,
+                );
                 const newIndex = items.findIndex((item) => item.id === over.id);
                 const newItems = arrayMove(items, oldIndex, newIndex);
                 const updatedItems = newItems.map((item, index) => ({
@@ -248,7 +262,7 @@ export default function ProductSpecifications({
         const data = new FormData();
         data.append('label', formData.label);
         data.append('value', formData.value);
-        
+
         if (!editingSpec) {
             data.append('product_id', productId.toString());
             data.append('order', (specifications.length + 1).toString());
@@ -258,6 +272,10 @@ export default function ProductSpecifications({
 
         if (imageFile) {
             data.append('image', imageFile);
+        }
+
+        if (method === 'put') {
+            data.append('_method', 'put');
         }
 
         router.post(url, data, {
@@ -298,7 +316,9 @@ export default function ProductSpecifications({
                 <CardHeader>
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle>{t('specifications.product_specs')}</CardTitle>
+                            <CardTitle>
+                                {t('specifications.product_specs')}
+                            </CardTitle>
                             <CardDescription>
                                 {t('specifications.technical_details')}
                             </CardDescription>
@@ -368,7 +388,9 @@ export default function ProductSpecifications({
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="image">{t('specifications.image')}</Label>
+                                <Label htmlFor="image">
+                                    {t('specifications.image')}
+                                </Label>
                                 <Input
                                     id="image"
                                     type="file"
@@ -380,30 +402,40 @@ export default function ProductSpecifications({
                                         <img
                                             src={imagePreview}
                                             alt="Preview"
-                                            className="h-32 w-32 object-cover rounded-lg border"
+                                            className="h-32 w-32 rounded-lg border object-cover"
                                         />
                                     </div>
                                 )}
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="label">{t('specifications.label')}</Label>
+                                <Label htmlFor="label">
+                                    {t('specifications.label')}
+                                </Label>
                                 <Input
                                     id="label"
                                     value={formData.label}
                                     onChange={(e) =>
-                                        setFormData({ ...formData, label: e.target.value })
+                                        setFormData({
+                                            ...formData,
+                                            label: e.target.value,
+                                        })
                                     }
                                     placeholder="e.g. Weight, Dimensions, Material"
                                     required
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="value">{t('specifications.value')}</Label>
+                                <Label htmlFor="value">
+                                    {t('specifications.value')}
+                                </Label>
                                 <Input
                                     id="value"
                                     value={formData.value}
                                     onChange={(e) =>
-                                        setFormData({ ...formData, value: e.target.value })
+                                        setFormData({
+                                            ...formData,
+                                            value: e.target.value,
+                                        })
                                     }
                                     placeholder="e.g. 2.5 kg, 30x20x10 cm, Stainless Steel"
                                     required
@@ -419,14 +451,19 @@ export default function ProductSpecifications({
                                 {t('common.cancel')}
                             </Button>
                             <Button type="submit">
-                                {editingSpec ? t('common.update') : t('common.create')}
+                                {editingSpec
+                                    ? t('common.update')
+                                    : t('common.create')}
                             </Button>
                         </DialogFooter>
                     </form>
                 </DialogContent>
             </Dialog>
 
-            <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+            <AlertDialog
+                open={deleteDialogOpen}
+                onOpenChange={setDeleteDialogOpen}
+            >
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
@@ -437,7 +474,9 @@ export default function ProductSpecifications({
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                        <AlertDialogCancel>
+                            {t('common.cancel')}
+                        </AlertDialogCancel>
                         <AlertDialogAction onClick={confirmDelete}>
                             {t('common.delete')}
                         </AlertDialogAction>

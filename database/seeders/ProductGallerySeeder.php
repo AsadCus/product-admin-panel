@@ -15,43 +15,37 @@ class ProductGallerySeeder extends Seeder
      */
     public function run(): void
     {
-        // Clear existing galleries
         ProductGallery::truncate();
 
-        // Ensure directory exists
         Storage::disk('public')->makeDirectory('product-galleries');
 
-        // Create placeholder image
-        $placeholderPath = storage_path('app/public/product-galleries/placeholder.jpg');
-        if (! File::exists($placeholderPath)) {
-            // Create a simple placeholder image using GD
-            $width = 800;
-            $height = 600;
-            $image = imagecreatetruecolor($width, $height);
+        $sourceDirectory = public_path('seeder/product-galleries');
 
-            // Set background color (light gray)
-            $bgColor = imagecolorallocate($image, 240, 240, 240);
-            imagefill($image, 0, 0, $bgColor);
+        if (! File::isDirectory($sourceDirectory)) {
+            $this->command?->warn('Seeder source directory not found: public/seeder/product-galleries');
 
-            // Set text color (dark gray)
-            $textColor = imagecolorallocate($image, 100, 100, 100);
-
-            // Add text
-            $text = 'Product Image';
-            $font = 5; // Built-in font
-            $textWidth = imagefontwidth($font) * strlen($text);
-            $textHeight = imagefontheight($font);
-            $x = ($width - $textWidth) / 2;
-            $y = ($height - $textHeight) / 2;
-
-            imagestring($image, $font, $x, $y, $text, $textColor);
-
-            // Save image
-            imagejpeg($image, $placeholderPath, 90);
-            imagedestroy($image);
+            return;
         }
 
-        // Get all products
+        $sourceFiles = collect(File::files($sourceDirectory));
+
+        if ($sourceFiles->isEmpty()) {
+            $this->command?->warn('No images found in public/seeder/product-galleries');
+
+            return;
+        }
+
+        $storagePaths = $sourceFiles
+            ->map(function ($file): string {
+                $filename = $file->getFilename();
+                $destinationPath = 'product-galleries/'.$filename;
+
+                Storage::disk('public')->put($destinationPath, File::get($file->getRealPath()));
+
+                return $destinationPath;
+            })
+            ->values();
+
         $products = Product::all();
 
         if ($products->isEmpty()) {
@@ -60,16 +54,15 @@ class ProductGallerySeeder extends Seeder
             return;
         }
 
-        // Create galleries for each product
         foreach ($products as $product) {
-            // Create 2-3 galleries per product
-            $galleryCount = rand(2, 3);
+            $galleryCount = min(random_int(2, 3), $storagePaths->count());
+            $selectedPaths = $storagePaths->shuffle()->take($galleryCount)->values();
 
-            for ($i = 0; $i < $galleryCount; $i++) {
+            foreach ($selectedPaths as $index => $filePath) {
                 ProductGallery::create([
-                    'file_path' => 'product-galleries/placeholder.jpg',
+                    'file_path' => $filePath,
                     'product_id' => $product->id,
-                    'order' => $i,
+                    'order' => $index + 1,
                 ]);
             }
         }
